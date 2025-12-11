@@ -1,0 +1,536 @@
+[
+    {
+        "id": "101",
+        "sku": "AFG-001",
+        "title": "Royal Blue Embroidered Afghani Suit",
+        "category": "AFGHANI",
+        "description": "Elegant royal blue Afghani suit with intricate golden embroidery and comfortable salwar.",
+        "images": [
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1583391733958-3771e05d9e5b?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "S",
+                "mrp": 1200,
+                "available_qty": 50
+            },
+            {
+                "size": "M",
+                "mrp": 1250,
+                "available_qty": 40
+            },
+            {
+                "size": "L",
+                "mrp": 1300,
+                "available_qty": 30
+            }
+        ],
+        "tags": [
+            "blue",
+            "party-wear",
+            "embroidery"
+        ],
+        "created_at": "2025-10-01T10:00:00Z"
+    },
+    {
+        "id": "102",
+        "sku": "AFG-002",
+        "title": "Maroon Velvet Afghani Set",
+        "category": "AFGHANI",
+        "description": "Luxurious maroon velvet Afghani suit perfect for winter weddings.",
+        "images": [
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1596783437088-02d3827a98ce?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 1800,
+                "available_qty": 20
+            },
+            {
+                "size": "L",
+                "mrp": 1850,
+                "available_qty": 15
+            }
+        ],
+        "tags": [
+            "velvet",
+            "maroon",
+            "winter"
+        ],
+        "created_at": "2025-10-02T11:00:00Z"
+    },
+    {
+        "id": "103",
+        "sku": "AFG-003",
+        "title": "Pastel Pink Cotton Afghani",
+        "category": "AFGHANI",
+        "description": "Breathable cotton Afghani suit in lovely pastel pink for daily wear.",
+        "images": [
+            "https://images.unsplash.com/photo-1529139574466-a302d27f7854?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "S",
+                "mrp": 800,
+                "available_qty": 100
+            },
+            {
+                "size": "M",
+                "mrp": 800,
+                "available_qty": 80
+            },
+            {
+                "size": "L",
+                "mrp": 800,
+                "available_qty": 60
+            }
+        ],
+        "tags": [
+            "cotton",
+            "pink",
+            "daily"
+        ],
+        "created_at": "2025-10-03T12:00:00Z"
+    },
+    {
+        "id": "104",
+        "sku": "AFG-004",
+        "title": "Black & Gold Afghani Suit",
+        "category": "AFGHANI",
+        "description": "Stunning black suit with gold thread work.",
+        "images": [
+            "https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 1500,
+                "available_qty": 45
+            },
+            {
+                "size": "XL",
+                "mrp": 1600,
+                "available_qty": 20
+            }
+        ],
+        "tags": [
+            "black",
+            "party",
+            "gold"
+        ],
+        "created_at": "2025-10-04T09:00:00Z"
+    },
+    {
+        "id": "105",
+        "sku": "AFG-005",
+        "title": "Green Silk Afghani",
+        "category": "AFGHANI",
+        "description": "Traditional green silk Afghani suit.",
+        "images": [
+            "https://images.unsplash.com/photo-1583391733958-3771e05d9e5b?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "L",
+                "mrp": 2000,
+                "available_qty": 10
+            }
+        ],
+        "tags": [
+            "green",
+            "silk",
+            "traditional"
+        ],
+        "created_at": "2025-10-05T14:00:00Z"
+    },
+    {
+        "id": "201",
+        "sku": "KUR-001",
+        "title": "Yellow Haldi Special Kurti",
+        "category": "KURTI",
+        "description": "Bright yellow kurti, perfect for Haldi ceremonies.",
+        "images": [
+            "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "S",
+                "mrp": 500,
+                "available_qty": 200
+            },
+            {
+                "size": "M",
+                "mrp": 550,
+                "available_qty": 150
+            }
+        ],
+        "tags": [
+            "yellow",
+            "haldi",
+            "kurti"
+        ],
+        "created_at": "2025-10-06T10:00:00Z"
+    },
+    {
+        "id": "202",
+        "sku": "KUR-002",
+        "title": "White Chic Kurti",
+        "category": "KURTI",
+        "description": "Minimalist white kurti with modern cut.",
+        "images": [
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 600,
+                "available_qty": 80
+            },
+            {
+                "size": "L",
+                "mrp": 600,
+                "available_qty": 70
+            }
+        ],
+        "tags": [
+            "white",
+            "chic",
+            "office-wear"
+        ],
+        "created_at": "2025-10-07T11:00:00Z"
+    },
+    {
+        "id": "203",
+        "sku": "KUR-003",
+        "title": "Printed Red Kurti",
+        "category": "KURTI",
+        "description": "Red kurti with traditional block prints.",
+        "images": [
+            "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "S",
+                "mrp": 450,
+                "available_qty": 120
+            },
+            {
+                "size": "XL",
+                "mrp": 500,
+                "available_qty": 60
+            }
+        ],
+        "tags": [
+            "red",
+            "printed",
+            "daily"
+        ],
+        "created_at": "2025-10-08T12:00:00Z"
+    },
+    {
+        "id": "204",
+        "sku": "KUR-004",
+        "title": "Blue Denim Style Kurti",
+        "category": "KURTI",
+        "description": "Fusion wear denim style kurti.",
+        "images": [
+            "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 700,
+                "available_qty": 90
+            }
+        ],
+        "tags": [
+            "blue",
+            "denim",
+            "fusion"
+        ],
+        "created_at": "2025-10-09T13:00:00Z"
+    },
+    {
+        "id": "205",
+        "sku": "KUR-005",
+        "title": "Green Embroidered Kurti",
+        "category": "KURTI",
+        "description": "Simple green kurti with neck embroidery.",
+        "images": [
+            "https://images.unsplash.com/photo-1551163943-3f6a29e39454?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "L",
+                "mrp": 550,
+                "available_qty": 100
+            }
+        ],
+        "tags": [
+            "green",
+            "embroidery",
+            "casual"
+        ],
+        "created_at": "2025-10-10T14:00:00Z"
+    },
+    {
+        "id": "301",
+        "sku": "PLZ-001",
+        "title": "Comfort Plazzo Set",
+        "category": "PLAZZO",
+        "description": "Super comfortable cotton plazzo set for home and outings.",
+        "images": [
+            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "Free Size",
+                "mrp": 900,
+                "available_qty": 200
+            }
+        ],
+        "tags": [
+            "comfort",
+            "plazzo",
+            "cotton"
+        ],
+        "created_at": "2025-10-11T10:00:00Z"
+    },
+    {
+        "id": "302",
+        "sku": "PLZ-002",
+        "title": "Wide Leg Printed Plazzo",
+        "category": "PLAZZO",
+        "description": "Trendy wide-leg plazzo with bohemian prints.",
+        "images": [
+            "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 750,
+                "available_qty": 150
+            }
+        ],
+        "tags": [
+            "boho",
+            "printed",
+            "fashion"
+        ],
+        "created_at": "2025-10-12T11:00:00Z"
+    },
+    {
+        "id": "303",
+        "sku": "PLZ-003",
+        "title": "Silk Party Plazzo",
+        "category": "PLAZZO",
+        "description": "Shiny silk plazzo for party wear.",
+        "images": [
+            "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "L",
+                "mrp": 1200,
+                "available_qty": 50
+            }
+        ],
+        "tags": [
+            "silk",
+            "party",
+            "shiny"
+        ],
+        "created_at": "2025-10-13T12:00:00Z"
+    },
+    {
+        "id": "401",
+        "sku": "GWN-001",
+        "title": "Emerald Green Evening Gown",
+        "category": "GOWN",
+        "description": "Stunning emerald green gown for evening receptions.",
+        "images": [
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 3000,
+                "available_qty": 10
+            },
+            {
+                "size": "L",
+                "mrp": 3200,
+                "available_qty": 8
+            }
+        ],
+        "tags": [
+            "gown",
+            "evening",
+            "party"
+        ],
+        "created_at": "2025-10-14T10:00:00Z"
+    },
+    {
+        "id": "402",
+        "sku": "GWN-002",
+        "title": "Red Carpet Gown",
+        "category": "GOWN",
+        "description": "Feel like a star in this red carpet ready gown.",
+        "images": [
+            "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "S",
+                "mrp": 4500,
+                "available_qty": 5
+            }
+        ],
+        "tags": [
+            "red",
+            "luxury",
+            "gown"
+        ],
+        "created_at": "2025-10-15T11:00:00Z"
+    },
+    {
+        "id": "403",
+        "sku": "GWN-003",
+        "title": "Floral Summer Gown",
+        "category": "GOWN",
+        "description": "Light and breezy floral gown for summer days.",
+        "images": [
+            "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 2500,
+                "available_qty": 20
+            }
+        ],
+        "tags": [
+            "floral",
+            "summer",
+            "light"
+        ],
+        "created_at": "2025-10-16T12:00:00Z"
+    },
+    {
+        "id": "501",
+        "sku": "LEH-001",
+        "title": "Bridal Red Lehenga",
+        "category": "LEHENGA",
+        "description": "Traditional red bridal lehenga with heavy embroidery.",
+        "images": [
+            "https://images.unsplash.com/photo-1594576722512-582bcd46fba3?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1583391733958-3771e05d9e5b?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "Free Size",
+                "mrp": 15000,
+                "available_qty": 2
+            }
+        ],
+        "tags": [
+            "bridal",
+            "red",
+            "heavy"
+        ],
+        "created_at": "2025-10-17T10:00:00Z"
+    },
+    {
+        "id": "502",
+        "sku": "LEH-002",
+        "title": "Pink Floral Lehenga",
+        "category": "LEHENGA",
+        "description": "Soft pink floral lehenga for bridesmaids.",
+        "images": [
+            "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 5000,
+                "available_qty": 15
+            }
+        ],
+        "tags": [
+            "pink",
+            "bridesmaid",
+            "floral"
+        ],
+        "created_at": "2025-10-18T11:00:00Z"
+    },
+    {
+        "id": "503",
+        "sku": "LEH-003",
+        "title": "Golden Party Lehenga",
+        "category": "LEHENGA",
+        "description": "Shimmering golden lehenga for cocktail parties.",
+        "images": [
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "L",
+                "mrp": 7000,
+                "available_qty": 8
+            }
+        ],
+        "tags": [
+            "gold",
+            "party",
+            "modern"
+        ],
+        "created_at": "2025-10-19T12:00:00Z"
+    },
+    {
+        "id": "106",
+        "sku": "AFG-006",
+        "title": "Simple White Afghani",
+        "category": "AFGHANI",
+        "description": "Elegant white afghani suit.",
+        "images": [
+            "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "S",
+                "mrp": 900,
+                "available_qty": 50
+            }
+        ],
+        "tags": [
+            "white",
+            "simple"
+        ],
+        "created_at": "2025-10-20T10:00:00Z"
+    },
+    {
+        "id": "206",
+        "sku": "KUR-006",
+        "title": "Black Formal Kurti",
+        "category": "KURTI",
+        "description": "Formal black kurti for office.",
+        "images": [
+            "https://images.unsplash.com/photo-1503342394128-c104d54dba01?auto=format&fit=crop&w=800&q=80"
+        ],
+        "variants": [
+            {
+                "size": "M",
+                "mrp": 650,
+                "available_qty": 60
+            }
+        ],
+        "tags": [
+            "black",
+            "formal"
+        ],
+        "created_at": "2025-10-21T11:00:00Z"
+    }
+]
