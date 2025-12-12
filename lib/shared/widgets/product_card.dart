@@ -57,13 +57,27 @@ class ProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   _buildPrice(context),
-                  const SizedBox(height: 4),
-                  Text(
-                    product.variants.map((v) => v.size).join(", "),
-                    style: Theme.of(context).textTheme.bodySmall,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    children: product.variants.take(4).map((v) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: Text(
+                        v.size,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
+                      ),
+                    )).toList(),
                   ),
+                  if (product.variants.length > 4) ...[
+                      const SizedBox(height: 2),
+                      Text("+${product.variants.length - 4} more", style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                  ]
                 ],
               ),
             ),
