@@ -3,43 +3,151 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
 import '../models/product.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final Product product;
 
   const ProductCard({super.key, required this.product});
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  bool isLiked = false;
+
+  void _toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+  }
+
+  void _shareProduct() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Share via',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildShareOption(
+                    icon: Icons.chat_bubble,
+                    color: Colors.green,
+                    label: 'WhatsApp',
+                  ),
+                  _buildShareOption(
+                    icon: Icons.camera_alt,
+                    color: Colors.purple,
+                    label: 'Instagram',
+                  ),
+                  _buildShareOption(
+                    icon: Icons.email,
+                    color: Colors.red,
+                    label: 'Gmail',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildShareOption({required IconData icon, required Color color, required String label}) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Shared to $label')),
+        );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 30),
+          ),
+          const SizedBox(height: 8),
+          Text(label, style: Theme.of(context).textTheme.bodyMedium),
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go('/product/${product.id}'),
+      onTap: () => context.go('/product/${widget.product.id}'),
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Hero(
-                tag: 'product_${product.id}',
-                child: product.images.length > 1 
-                  ? PageView.builder(
-                      itemCount: product.images.length,
-                      itemBuilder: (context, index) {
-                        return CachedNetworkImage(
-                          imageUrl: product.images[index],
+              child: Stack(
+                children: [
+                  Hero(
+                    tag: 'product_${widget.product.id}',
+                    child: widget.product.images.length > 1 
+                      ? PageView.builder(
+                          itemCount: widget.product.images.length,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: widget.product.images[index],
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              placeholder: (context, url) => Container(color: Colors.grey[200]),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            );
+                          },
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: widget.product.images.first,
                           fit: BoxFit.cover,
                           width: double.infinity,
                           placeholder: (context, url) => Container(color: Colors.grey[200]),
                           errorWidget: (context, url, error) => const Icon(Icons.error),
-                        );
-                      },
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: product.images.first,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      placeholder: (context, url) => Container(color: Colors.grey[200]),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                        ),
+                  ),
+                  // Action Buttons
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Column(
+                      children: [
+                        _buildActionButton(
+                          icon: isLiked ? Icons.favorite : Icons.favorite_border,
+                          color: isLiked ? Colors.red : Colors.grey,
+                          onTap: _toggleLike,
+                        ),
+                        const SizedBox(height: 8),
+                        _buildActionButton(
+                          icon: Icons.share,
+                          color: Colors.black54,
+                          onTap: _shareProduct,
+                        ),
+                      ],
                     ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -48,7 +156,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.title,
+                    widget.product.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -61,7 +169,7 @@ class ProductCard extends StatelessWidget {
                   Wrap(
                     spacing: 4,
                     runSpacing: 4,
-                    children: product.variants.take(4).map((v) => Container(
+                    children: widget.product.variants.take(4).map((v) => Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -74,9 +182,9 @@ class ProductCard extends StatelessWidget {
                       ),
                     )).toList(),
                   ),
-                  if (product.variants.length > 4) ...[
+                  if (widget.product.variants.length > 4) ...[
                       const SizedBox(height: 2),
-                      Text("+${product.variants.length - 4} more", style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                      Text("+${widget.product.variants.length - 4} more", style: const TextStyle(fontSize: 10, color: Colors.grey)),
                   ]
                 ],
               ),
@@ -87,11 +195,36 @@ class ProductCard extends StatelessWidget {
     );
   }
 
+  Widget _buildActionButton({required IconData icon, required Color color, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.8),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Icon(
+          icon,
+          size: 18,
+          color: color,
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildPrice(BuildContext context) {
-    if (product.variants.isEmpty) return const SizedBox.shrink();
+    if (widget.product.variants.isEmpty) return const SizedBox.shrink();
     
-    final prices = product.variants.map((v) => v.mrp).toList();
+    final prices = widget.product.variants.map((v) => v.mrp).toList();
     if (prices.isEmpty) return const SizedBox.shrink();
 
     prices.sort();

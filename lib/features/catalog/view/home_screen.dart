@@ -46,6 +46,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                   const SizedBox(height: 4),
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     children: [
+                       Text(
+                         "HN Apparel",
+                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                           fontWeight: FontWeight.bold, 
+                           color: Theme.of(context).primaryColor
+                         )
+                       ),
+                       Row(
+                         children: [
+                           IconButton(
+                             onPressed: () => context.push('/wishlist'),
+                             icon: const Icon(Icons.favorite_border),
+                           ),
+                           IconButton(
+                             onPressed: () => context.push('/cart'),
+                             icon: const Icon(Icons.shopping_bag_outlined),
+                           ),
+                         ],
+                       )
+                     ],
+                   ),
                    const SizedBox(height: 16),
                    Container(
                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

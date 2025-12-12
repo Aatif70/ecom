@@ -7,6 +7,7 @@ import '../../features/product_detail/view/product_detail_screen.dart';
 import '../../features/cart/view/cart_screen.dart';
 import '../../features/orders/view/orders_screen.dart';
 import '../../features/admin/view/admin_dashboard_screen.dart';
+import '../../features/wishlist/view/wishlist_screen.dart';
 import '../../shared/widgets/scaffold_with_nav_bar.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -85,6 +86,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/cart',
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const CartScreen(),
+      ),
+      GoRoute(
+        path: '/wishlist',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const WishlistScreen(),
       ),
       GoRoute(
         path: '/login',
