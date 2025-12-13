@@ -29,4 +29,17 @@ class AuthService {
       );
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await http.post(
+        Uri.parse('${ApiConstants.baseUrl}${ApiConstants.logoutEndpoint}'),
+         headers: {'Content-Type': 'application/json'},
+      );
+    } catch (e) {
+      // Logout error can be ignored locally, but logging it is good practice
+      print('Logout failed: $e');
+    }
+  }
+
 }

@@ -91,6 +91,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
+    await _authService.logout(); // Call API first
     await _storageService.clearAuth();
     state = const AuthState();
   }

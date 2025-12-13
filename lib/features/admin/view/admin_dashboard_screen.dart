@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/mock_data_service.dart';
+import '../../auth/provider/auth_provider.dart';
 import '../../catalog/view/home_screen.dart'; // Reusing productsProvider
-
 import 'add_product_screen.dart';
+import 'brand_list_screen.dart';
+import 'category_list_screen.dart';
 
 class AdminDashboardScreen extends ConsumerWidget {
   const AdminDashboardScreen({super.key});
@@ -12,20 +14,28 @@ class AdminDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 2,
+      length: 4, // Updated to 4
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Admin Dashboard'),
           bottom: const TabBar(
+            isScrollable: true,
             tabs: [
               Tab(text: 'Products'),
               Tab(text: 'Orders'),
+              Tab(text: 'Brands'),
+              Tab(text: 'Categories'),
             ],
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.exit_to_app),
-              onPressed: () => context.go('/'),
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                 await ref.read(authProvider.notifier).logout();
+                 if (context.mounted) {
+                   context.go('/login');
+                 }
+              },
             ),
           ],
         ),
@@ -33,6 +43,8 @@ class AdminDashboardScreen extends ConsumerWidget {
           children: [
             _ProductList(),
             _OrderList(),
+            BrandListScreen(),
+            CategoryListScreen(),
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -118,3 +130,4 @@ class _OrderList extends ConsumerWidget {
     );
   }
 }
+

@@ -1,0 +1,111 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import '../../../core/constants/api_constants.dart';
+import '../../../core/services/storage_service.dart';
+import '../models/admin_models.dart';
+
+class AdminService {
+  final StorageService _storageService;
+
+  AdminService(this._storageService);
+
+  Future<Map<String, String>> _getHeaders() async {
+    final token = await _storageService.getToken();
+    return {
+      'Authorization': 'Bearer $token',
+      // Content-Type is handled automatically for Multipart, manual for JSON if needed
+    };
+  }
+
+  // --- Brands ---
+
+  Future<List<Brand>> getBrands(int page, int pageSize) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.brandEndpoint}')
+        .replace(queryParameters: {
+      'page': page.toString(),
+      'pageSize': pageSize.toString(),
+    });
+
+    final response = await http.get(uri, headers: headers);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Brand.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load brands: ${response.statusCode}');
+    }
+  }
+
+  Future<void> addBrand(String name, File imageFile) async {
+    final headers = await _getHeaders();
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.brandEndpoint}'),
+    );
+    
+    request.headers.addAll(headers);
+    request.fields['Name'] = name;
+    
+    // Check if file exists to avoid errors
+    if (await imageFile.exists()) {
+       request.files.add(await http.MultipartFile.fromPath(
+        'Logo',
+        imageFile.path,
+      ));
+    }
+
+    final streamResponse = await request.send();
+    final response = await http.Response.fromStream(streamResponse);
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception('Failed to add brand: ${response.body}');
+    }
+  }
+
+  // --- Categories ---
+
+  Future<List<Category>> getCategories(int page, int pageSize) async {
+    final headers = await _getHeaders();
+     final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.categoryEndpoint}')
+        .replace(queryParameters: {
+      'page': page.toString(),
+      'pageSize': pageSize.toString(),
+    });
+
+    final response = await http.get(uri, headers: headers);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Category.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load categories: ${response.statusCode}');
+    }
+  }
+
+  Future<void> addCategory(String name, File imageFile) async {
+    final headers = await _getHeaders();
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.categoryEndpoint}'),
+    );
+
+    request.headers.addAll(headers);
+    request.fields['Name'] = name;
+
+    if (await imageFile.exists()) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'Image', // Assuming 'Image' based on requirement "Image:{image}"
+        imageFile.path,
+      ));
+    }
+
+    final streamResponse = await request.send();
+    final response = await http.Response.fromStream(streamResponse);
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+       throw Exception('Failed to add category: ${response.body}');
+    }
+  }
+}
