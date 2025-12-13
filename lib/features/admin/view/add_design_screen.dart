@@ -131,6 +131,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
               onChanged: (val) => setState(() => _selectedBrandId = val),
               itemLabelBuilder: (item) => item.name,
               itemValueBuilder: (item) => item.id,
+              itemImageBuilder: (item) => item.logoUrl,
             ),
             const SizedBox(height: 16),
 
@@ -144,6 +145,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
               onChanged: (val) => setState(() => _selectedCategoryId = val),
               itemLabelBuilder: (item) => item.name,
               itemValueBuilder: (item) => item.id,
+              itemImageBuilder: (item) => item.imageUrl,
             ),
             const SizedBox(height: 16),
 
@@ -165,7 +167,8 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
               title: const Text("Is New Arrival?", style: TextStyle(fontWeight: FontWeight.w600)),
               value: _isNew,
               onChanged: (val) => setState(() => _isNew = val),
-              activeColor: Colors.blueAccent,
+              activeTrackColor: Colors.blueAccent.withValues(alpha: 0.5),
+              activeThumbColor: Colors.blueAccent,
               contentPadding: EdgeInsets.zero,
             ),
 
@@ -235,6 +238,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
     required ValueChanged<int?> onChanged,
     required String Function(T) itemLabelBuilder,
     required int Function(T) itemValueBuilder,
+    String? Function(T)? itemImageBuilder,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -246,23 +250,52 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
       child: isLoading
           ? const Padding(
               padding: EdgeInsets.all(16.0),
-              child: Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))),
+              child: Center(
+                  child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2))),
             )
           : DropdownButtonHideUnderline(
               child: DropdownButton<int>(
                 value: value,
-                hint: Row(children: [Icon(icon, color: Colors.grey), const SizedBox(width: 12), Text(label)]),
+                hint: Row(children: [
+                  Icon(icon, color: Colors.grey),
+                  const SizedBox(width: 12),
+                  Text(label)
+                ]),
                 isExpanded: true,
                 onChanged: onChanged,
                 icon: const Icon(Icons.arrow_drop_down),
                 items: items.map((item) {
+                  final imageUrl =
+                      itemImageBuilder != null ? itemImageBuilder(item) : null;
                   return DropdownMenuItem<int>(
                     value: itemValueBuilder(item),
                     child: Row(
                       children: [
-                        Icon(icon, color: Colors.blueAccent, size: 20),
+                        if (imageUrl != null && imageUrl.isNotEmpty)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Image.network(
+                              imageUrl,
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(icon, color: Colors.blueAccent, size: 24),
+                            ),
+                          )
+                        else
+                          Icon(icon, color: Colors.blueAccent, size: 24),
                         const SizedBox(width: 12),
-                        Text(itemLabelBuilder(item)),
+                        Container(
+                           constraints: const BoxConstraints(maxWidth: 200),
+                           child: Text(
+                             itemLabelBuilder(item),
+                             overflow: TextOverflow.ellipsis,
+                           ),
+                        ),
                       ],
                     ),
                   );
