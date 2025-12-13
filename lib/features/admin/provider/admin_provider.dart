@@ -21,13 +21,15 @@ class BrandController extends StateNotifier<AsyncValue<void>> {
 
   BrandController(this._adminService) : super(const AsyncData(null));
 
-  Future<void> addBrand(String name, File imageFile) async {
+  Future<Map<String, dynamic>?> addBrand(String name, File imageFile) async {
     state = const AsyncLoading();
     try {
-      await _adminService.addBrand(name, imageFile);
+      final res = await _adminService.addBrand(name, imageFile);
       state = const AsyncData(null);
+      return res;
     } catch (e, st) {
       state = AsyncError(e, st);
+      return null;
     }
   }
 }

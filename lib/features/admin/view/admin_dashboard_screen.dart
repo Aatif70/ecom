@@ -47,15 +47,7 @@ class AdminDashboardScreen extends ConsumerWidget {
             CategoryListScreen(),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AddProductScreen()),
-            );
-          },
-          label: const Text('Add Product'),
-          icon: const Icon(Icons.add),
-        ),
+
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../shared/models/product.dart';
 import '../../shared/models/order.dart';
+import '../utils/fancy_logger.dart';
 
 final mockDataServiceProvider = Provider<MockDataService>((ref) {
   return MockDataService();
@@ -29,7 +30,9 @@ class MockDataService {
   }
 
   Future<List<Product>> getProducts() async {
+    FancyLogger.apiRequest('MOCK', 'getProducts');
     await _ensureProductsLoaded();
+    FancyLogger.apiResponse('MOCK', 'getProducts', 200, '${_products!.length} products');
     return _products!;
   }
 
@@ -39,7 +42,9 @@ class MockDataService {
   }
 
   Future<List<Order>> getOrders() async {
+    FancyLogger.apiRequest('MOCK', 'getOrders');
     await _ensureOrdersLoaded();
+    FancyLogger.apiResponse('MOCK', 'getOrders', 200, '${_orders!.length} orders');
     return _orders!;
   }
   

@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import '../../../core/services/api_client.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/services/storage_service.dart';
 import '../models/admin_models.dart';
 
 class AdminService {
   final StorageService _storageService;
+  final ApiClient _client = ApiClient();
 
   AdminService(this._storageService);
 
@@ -31,14 +33,15 @@ class AdminService {
     final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final List<dynamic> data = responseData['Data'] ?? [];
       return data.map((json) => Brand.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load brands: ${response.statusCode}');
     }
   }
 
-  Future<void> addBrand(String name, File imageFile) async {
+  Future<Map<String, dynamic>> addBrand(String name, File imageFile) async {
     final headers = await _getHeaders();
     var request = http.MultipartRequest(
       'POST',
@@ -59,7 +62,9 @@ class AdminService {
     final streamResponse = await request.send();
     final response = await http.Response.fromStream(streamResponse);
 
-    if (response.statusCode != 200 && response.statusCode != 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+       return jsonDecode(response.body);
+    } else {
       throw Exception('Failed to add brand: ${response.body}');
     }
   }
@@ -77,7 +82,8 @@ class AdminService {
     final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final List<dynamic> data = responseData['Data'] ?? [];
       return data.map((json) => Category.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load categories: ${response.statusCode}');

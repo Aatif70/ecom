@@ -33,26 +33,40 @@ class _AddBrandScreenState extends ConsumerState<AddBrandScreen> {
       return;
     }
 
-    await ref.read(brandControllerProvider.notifier).addBrand(
+    final res = await ref.read(brandControllerProvider.notifier).addBrand(
       _nameController.text,
       _imageFile!,
     );
 
-    // Check state for success/error
-    // Ideally use ref.listen in build, but simple await/check assumes success if no error thrown in controller
-    // With AsyncValue in controller:
-    final state = ref.read(brandControllerProvider);
-    if (state.hasError) {
-       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${state.error}')),
+    if (mounted) {
+      if (res != null) {
+        // Success
+        final message = res['Message'] ?? 'Brand added successfully';
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Success'),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx); // Close dialog
+                  Navigator.pop(context); // Close screen
+                },
+                child: const Text('OK'),
+              )
+            ],
+          ),
         );
-       }
-    } else {
-      if (mounted) {
-        Navigator.pop(context);
-        // Refresh list logic usually handled by simple auto-dispose or invalidation
-        ref.invalidate(brandsProvider(1)); 
+        ref.invalidate(brandsProvider(1));
+      } else {
+        // Error (already handled by state error? or just show generic if res is null)
+        final state = ref.read(brandControllerProvider);
+        if (state.hasError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.error}')),
+          );
+        }
       }
     }
   }

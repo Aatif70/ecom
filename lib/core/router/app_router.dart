@@ -10,6 +10,7 @@ import '../../features/admin/view/admin_dashboard_screen.dart';
 import '../../features/wishlist/view/wishlist_screen.dart';
 import '../../shared/widgets/scaffold_with_nav_bar.dart';
 import '../../features/auth/view/login_screen.dart';
+import 'router_observer.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -98,6 +99,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const LoginScreen(),
       ),
+    ],
+    observers: [
+      AppRouterObserver(),
     ],
   );
 });

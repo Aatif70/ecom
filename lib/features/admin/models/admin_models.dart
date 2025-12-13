@@ -1,16 +1,21 @@
+import '../../../core/constants/api_constants.dart';
 
 class Brand {
-  final int id; // Assuming ID is int from common API patterns, but specific response not shown. I will assume int based on User Id.
+  final int id;
   final String name;
   final String? logoUrl;
 
   Brand({required this.id, required this.name, this.logoUrl});
 
   factory Brand.fromJson(Map<String, dynamic> json) {
+    String? logo = json['LogoUrl'];
+    if (logo != null && !logo.startsWith('http')) {
+      logo = '${ApiConstants.baseUrl}$logo';
+    }
     return Brand(
-      id: json['Id'] ?? 0,
+      id: json['BrandId'] ?? json['Id'] ?? 0,
       name: json['Name'] ?? '',
-      logoUrl: json['LogoUrl'], // Check actual response key if possible, assuming standard
+      logoUrl: logo,
     );
   }
 }
@@ -23,10 +28,14 @@ class Category {
   Category({required this.id, required this.name, this.imageUrl});
 
   factory Category.fromJson(Map<String, dynamic> json) {
+    String? img = json['ImageUrl'];
+    if (img != null && !img.startsWith('http')) {
+      img = '${ApiConstants.baseUrl}$img';
+    }
     return Category(
-      id: json['Id'] ?? 0,
+      id: json['CategoryId'] ?? json['Id'] ?? 0,
       name: json['Name'] ?? '',
-      imageUrl: json['ImageUrl'],
+      imageUrl: img,
     );
   }
 }

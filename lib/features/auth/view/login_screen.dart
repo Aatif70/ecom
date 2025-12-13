@@ -27,7 +27,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
       }
       if (next.isLoggedIn && (previous?.isLoggedIn != true)) {
-         context.go('/home'); // Or wherever you want to redirect
+         context.go('/'); // Navigate to home
       }
     });
 

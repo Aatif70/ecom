@@ -1,12 +1,14 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'api_client.dart';
 import '../constants/api_constants.dart';
 import '../../shared/models/user.dart';
 
 class AuthService {
+  final ApiClient _client = ApiClient();
+
   Future<AuthResponse> login(String email, String password) async {
     try {
-      final response = await http.post(
+      final response = await _client.post(
         Uri.parse('${ApiConstants.baseUrl}${ApiConstants.loginEndpoint}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
@@ -32,13 +34,13 @@ class AuthService {
 
   Future<void> logout() async {
     try {
-      await http.post(
+      await _client.post(
         Uri.parse('${ApiConstants.baseUrl}${ApiConstants.logoutEndpoint}'),
          headers: {'Content-Type': 'application/json'},
       );
     } catch (e) {
       // Logout error can be ignored locally, but logging it is good practice
-      print('Logout failed: $e');
+      // ApiClient logs errors, so we might just let it be or do extra handling
     }
   }
 

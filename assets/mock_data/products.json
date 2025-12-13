@@ -62,39 +62,7 @@
         ],
         "created_at": "2025-10-02T11:00:00Z"
     },
-    {
-        "id": "103",
-        "sku": "AFG-003",
-        "title": "Pastel Pink Cotton Afghani",
-        "category": "AFGHANI",
-        "description": "Breathable cotton Afghani suit in lovely pastel pink for daily wear.",
-        "images": [
-            "https://images.unsplash.com/photo-1529139574466-a302d27f7854?auto=format&fit=crop&w=800&q=80"
-        ],
-        "variants": [
-            {
-                "size": "18-20",
-                "mrp": 800,
-                "available_qty": 100
-            },
-            {
-                "size": "24-32",
-                "mrp": 800,
-                "available_qty": 80
-            },
-            {
-                "size": "24-44",
-                "mrp": 800,
-                "available_qty": 60
-            }
-        ],
-        "tags": [
-            "cotton",
-            "pink",
-            "daily"
-        ],
-        "created_at": "2025-10-03T12:00:00Z"
-    },
+
     {
         "id": "104",
         "sku": "AFG-004",
@@ -123,29 +91,7 @@
         ],
         "created_at": "2025-10-04T09:00:00Z"
     },
-    {
-        "id": "105",
-        "sku": "AFG-005",
-        "title": "Green Silk Afghani",
-        "category": "AFGHANI",
-        "description": "Traditional green silk Afghani suit.",
-        "images": [
-            "https://images.unsplash.com/photo-1583391733958-3771e05d9e5b?auto=format&fit=crop&w=800&q=80"
-        ],
-        "variants": [
-            {
-                "size": "24-32",
-                "mrp": 2000,
-                "available_qty": 10
-            }
-        ],
-        "tags": [
-            "green",
-            "silk",
-            "traditional"
-        ],
-        "created_at": "2025-10-05T14:00:00Z"
-    },
+
     {
         "id": "201",
         "sku": "KUR-001",
@@ -253,29 +199,7 @@
         ],
         "created_at": "2025-10-09T13:00:00Z"
     },
-    {
-        "id": "205",
-        "sku": "KUR-005",
-        "title": "Green Embroidered Kurti",
-        "category": "KURTI",
-        "description": "Simple green kurti with neck embroidery.",
-        "images": [
-            "https://images.unsplash.com/photo-1551163943-3f6a29e39454?auto=format&fit=crop&w=800&q=80"
-        ],
-        "variants": [
-            {
-                "size": "24-32",
-                "mrp": 550,
-                "available_qty": 100
-            }
-        ],
-        "tags": [
-            "green",
-            "embroidery",
-            "casual"
-        ],
-        "created_at": "2025-10-10T14:00:00Z"
-    },
+
     {
         "id": "301",
         "sku": "PLZ-001",
