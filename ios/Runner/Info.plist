@@ -45,6 +45,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Need camera access to take photos of designs and brands</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need photo library access to upload brand and category images</string>
 </dict>
