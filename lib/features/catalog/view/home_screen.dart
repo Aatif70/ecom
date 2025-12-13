@@ -73,17 +73,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                    ),
                    const SizedBox(height: 16),
                    Container(
-                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                     height: 50,
                      decoration: BoxDecoration(
                        color: Colors.white,
-                       borderRadius: BorderRadius.circular(30),
+                       borderRadius: BorderRadius.circular(12),
                        boxShadow: [
                          BoxShadow(
-                           color: Colors.black.withValues(alpha: 0.5),
+                           color: Colors.black.withOpacity(0.05),
                            blurRadius: 10,
                            offset: const Offset(0, 4),
                          ),
                        ],
+                       border: Border.all(color: Colors.grey.withOpacity(0.1)),
                      ),
                      child: TextField(
                        onChanged: (value) {
@@ -91,11 +92,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                            _searchQuery = value.toLowerCase();
                          });
                        },
-                       decoration: const InputDecoration(
+                       decoration: InputDecoration(
                          hintText: 'Search for clothes...',
-                         prefixIcon: Icon(Icons.search, color: Colors.grey),
+                         hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+                         prefixIcon: const Icon(Icons.search, color: Colors.grey),
                          border: InputBorder.none,
-                         suffixIcon: Icon(Icons.mic, color: Colors.grey),
+                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                         suffixIcon: Container(
+                           margin: const EdgeInsets.all(8),
+                           decoration: BoxDecoration(
+                             color: Theme.of(context).primaryColor.withOpacity(0.1),
+                             shape: BoxShape.circle,
+                           ),
+                           child: Icon(Icons.tune, size: 18, color: Theme.of(context).primaryColor),
+                         ),
                        ),
                      ),
                    ),
