@@ -212,25 +212,24 @@ class AdminService {
     required bool isNew,
   }) async {
     final headers = await _getHeaders();
+    headers['Content-Type'] = 'application/json';
     final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.designEndpoint}');
     
-    final fields = {
+    final body = {
       'Title': title,
       'DesignNumber': designNumber,
-      'CategoryId': categoryId.toString(),
-      'SeriesId': seriesId.toString(),
-      'BrandId': brandId.toString(),
-      'IsNew': isNew.toString(),
+      'CategoryId': categoryId,
+      'SeriesId': seriesId,
+      'BrandId': brandId,
+      'IsNew': isNew,
     };
-    FancyLogger.apiRequest('POST', uri.toString(), fields);
+    FancyLogger.apiRequest('POST', uri.toString(), body);
 
-    var request = http.MultipartRequest('POST', uri);
-
-    request.headers.addAll(headers);
-    request.fields.addAll(fields);
-
-    final streamResponse = await request.send();
-    final response = await http.Response.fromStream(streamResponse);
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode(body),
+    );
 
     FancyLogger.apiResponse('POST', uri.toString(), response.statusCode, response.body);
 
