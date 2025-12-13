@@ -51,13 +51,15 @@ class CategoryController extends StateNotifier<AsyncValue<void>> {
 
   CategoryController(this._adminService) : super(const AsyncData(null));
 
-  Future<void> addCategory(String name, File imageFile) async {
+  Future<Map<String, dynamic>?> addCategory(String name, File imageFile) async {
     state = const AsyncLoading();
     try {
-      await _adminService.addCategory(name, imageFile);
+      final res = await _adminService.addCategory(name, imageFile);
       state = const AsyncData(null);
+      return res;
     } catch (e, st) {
       state = AsyncError(e, st);
+      return null;
     }
   }
 }

@@ -90,7 +90,7 @@ class AdminService {
     }
   }
 
-  Future<void> addCategory(String name, File imageFile) async {
+  Future<Map<String, dynamic>> addCategory(String name, File imageFile) async {
     final headers = await _getHeaders();
     var request = http.MultipartRequest(
       'POST',
@@ -110,7 +110,9 @@ class AdminService {
     final streamResponse = await request.send();
     final response = await http.Response.fromStream(streamResponse);
 
-    if (response.statusCode != 200 && response.statusCode != 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+       return jsonDecode(response.body);
+    } else {
        throw Exception('Failed to add category: ${response.body}');
     }
   }

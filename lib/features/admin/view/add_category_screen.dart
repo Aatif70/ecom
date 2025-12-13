@@ -33,22 +33,40 @@ class _AddCategoryScreenState extends ConsumerState<AddCategoryScreen> {
       return;
     }
 
-    await ref.read(categoryControllerProvider.notifier).addCategory(
+    final res = await ref.read(categoryControllerProvider.notifier).addCategory(
       _nameController.text,
       _imageFile!,
     );
 
-    final state = ref.read(categoryControllerProvider);
-    if (state.hasError) {
-      if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${state.error}')),
+    if (mounted) {
+      if (res != null) {
+        // Success
+        final message = res['Message'] ?? 'Category added successfully';
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Success'),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx); // Close dialog
+                  Navigator.pop(context); // Close screen
+                },
+                child: const Text('OK'),
+              )
+            ],
+          ),
         );
-      }
-    } else {
-      if (mounted) {
-        Navigator.pop(context);
         ref.invalidate(categoriesProvider(1));
+      } else {
+         // Error handled by state or propagated
+         final state = ref.read(categoryControllerProvider);
+         if (state.hasError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.error}')),
+          );
+        }
       }
     }
   }
