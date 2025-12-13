@@ -7,6 +7,7 @@ import '../../catalog/view/home_screen.dart'; // Reusing productsProvider
 import 'add_product_screen.dart';
 import 'brand_list_screen.dart';
 import 'category_list_screen.dart';
+import 'series_list_screen.dart';
 
 class AdminDashboardScreen extends ConsumerWidget {
   const AdminDashboardScreen({super.key});
@@ -14,7 +15,7 @@ class AdminDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 4, // Updated to 4
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Admin Dashboard'),
@@ -25,6 +26,7 @@ class AdminDashboardScreen extends ConsumerWidget {
               Tab(text: 'Orders'),
               Tab(text: 'Brands'),
               Tab(text: 'Categories'),
+              Tab(text: 'Series'),
             ],
           ),
           actions: [
@@ -45,6 +47,7 @@ class AdminDashboardScreen extends ConsumerWidget {
             _OrderList(),
             BrandListScreen(),
             CategoryListScreen(),
+            SeriesListScreen(),
           ],
         ),
 

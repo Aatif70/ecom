@@ -68,3 +68,33 @@ final categoryControllerProvider = StateNotifierProvider<CategoryController, Asy
   final adminService = ref.watch(adminServiceProvider);
   return CategoryController(adminService);
 });
+
+// --- Series ---
+
+final seriesProvider = FutureProvider.autoDispose.family<List<Series>, int>((ref, page) async {
+  final adminService = ref.watch(adminServiceProvider);
+  return adminService.getSeries(page, 10);
+});
+
+class SeriesController extends StateNotifier<AsyncValue<void>> {
+  final AdminService _adminService;
+
+  SeriesController(this._adminService) : super(const AsyncData(null));
+
+  Future<Map<String, dynamic>?> addSeries(String name) async {
+    state = const AsyncLoading();
+    try {
+      final res = await _adminService.addSeries(name);
+      state = const AsyncData(null);
+      return res;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return null;
+    }
+  }
+}
+
+final seriesControllerProvider = StateNotifierProvider<SeriesController, AsyncValue<void>>((ref) {
+  final adminService = ref.watch(adminServiceProvider);
+  return SeriesController(adminService);
+});

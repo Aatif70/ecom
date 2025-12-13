@@ -39,3 +39,17 @@ class Category {
     );
   }
 }
+
+class Series {
+  final int id;
+  final String name;
+
+  Series({required this.id, required this.name});
+
+  factory Series.fromJson(Map<String, dynamic> json) {
+    return Series(
+      id: json['SeriesId'] ?? json['Id'] ?? 0,
+      name: json['Name'] ?? '',
+    );
+  }
+}

@@ -24,7 +24,8 @@ class AdminService {
 
   Future<List<Brand>> getBrands(int page, int pageSize) async {
     final headers = await _getHeaders();
-    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.brandEndpoint}')
+    final uri = Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.brandEndpoint}')
         .replace(queryParameters: {
       'page': page.toString(),
       'pageSize': pageSize.toString(),
@@ -47,13 +48,13 @@ class AdminService {
       'POST',
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.brandEndpoint}'),
     );
-    
+
     request.headers.addAll(headers);
     request.fields['Name'] = name;
-    
+
     // Check if file exists to avoid errors
     if (await imageFile.exists()) {
-       request.files.add(await http.MultipartFile.fromPath(
+      request.files.add(await http.MultipartFile.fromPath(
         'Logo',
         imageFile.path,
       ));
@@ -63,7 +64,7 @@ class AdminService {
     final response = await http.Response.fromStream(streamResponse);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-       return jsonDecode(response.body);
+      return jsonDecode(response.body);
     } else {
       throw Exception('Failed to add brand: ${response.body}');
     }
@@ -73,7 +74,8 @@ class AdminService {
 
   Future<List<Category>> getCategories(int page, int pageSize) async {
     final headers = await _getHeaders();
-     final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.categoryEndpoint}')
+    final uri = Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.categoryEndpoint}')
         .replace(queryParameters: {
       'page': page.toString(),
       'pageSize': pageSize.toString(),
@@ -111,9 +113,56 @@ class AdminService {
     final response = await http.Response.fromStream(streamResponse);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-       return jsonDecode(response.body);
+      return jsonDecode(response.body);
     } else {
-       throw Exception('Failed to add category: ${response.body}');
+      throw Exception('Failed to add category: ${response.body}');
     }
   }
+
+    // --- Series ---
+
+    Future<List<Series>> getSeries(int page, int pageSize) async {
+      final headers = await _getHeaders();
+      final uri = Uri.parse(
+          '${ApiConstants.baseUrl}${ApiConstants.seriesEndpoint}')
+          .replace(queryParameters: {
+        'page': page.toString(),
+        'pageSize': pageSize.toString(),
+      });
+
+      final response = await http.get(uri,
+          headers: headers); // Using http directly to keep consistency within this file for now, or match others? ideally ApiClient but this file uses http for everything. Sticking to pattern in this file. Actually wait, getBrands used http.get directly too.
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> data = responseData['Data'] ?? [];
+        return data.map((json) => Series.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load series: ${response.statusCode}');
+      }
+    }
+
+    Future<Map<String, dynamic>> addSeries(String name) async {
+      try {
+        final headers = await _getHeaders();
+        headers['Content-Type'] = 'application/json';
+        
+        final response = await _client.post(
+          Uri.parse('${ApiConstants.baseUrl}${ApiConstants.seriesEndpoint}'),
+          headers: headers,
+          body: jsonEncode({
+            'Name': name,
+          }),
+        );
+
+        // ApiClient returns http.Response
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return jsonDecode(response.body);
+        } else {
+          throw Exception('Failed to add series: ${response.body}');
+        }
+      } catch (e) {
+        rethrow;
+      }
+    }
 }

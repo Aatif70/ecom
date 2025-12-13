@@ -5,4 +5,5 @@ class ApiConstants {
   static const String logoutEndpoint = '/api/Auth/logout';
   static const String brandEndpoint = '/api/Brand';
   static const String categoryEndpoint = '/api/Category';
+  static const String seriesEndpoint = '/api/Series';
 }
