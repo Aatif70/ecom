@@ -98,3 +98,47 @@ final seriesControllerProvider = StateNotifierProvider<SeriesController, AsyncVa
   final adminService = ref.watch(adminServiceProvider);
   return SeriesController(adminService);
 });
+
+// --- Designs ---
+
+final designsProvider = FutureProvider.autoDispose.family<List<Design>, int>((ref, page) async {
+  final adminService = ref.watch(adminServiceProvider);
+  return adminService.getDesigns(page, 10);
+});
+
+class DesignController extends StateNotifier<AsyncValue<void>> {
+  final AdminService _adminService;
+
+  DesignController(this._adminService) : super(const AsyncData(null));
+
+  Future<Map<String, dynamic>?> addDesign({
+    required String title,
+    required String designNumber,
+    required int categoryId,
+    required int seriesId,
+    required int brandId,
+    required bool isNew,
+  }) async {
+    state = const AsyncLoading();
+    try {
+      final res = await _adminService.addDesign(
+        title: title, 
+        designNumber: designNumber, 
+        categoryId: categoryId, 
+        seriesId: seriesId, 
+        brandId: brandId, 
+        isNew: isNew
+      );
+      state = const AsyncData(null);
+      return res;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return null;
+    }
+  }
+}
+
+final designControllerProvider = StateNotifierProvider<DesignController, AsyncValue<void>>((ref) {
+  final adminService = ref.watch(adminServiceProvider);
+  return DesignController(adminService);
+});
