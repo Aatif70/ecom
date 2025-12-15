@@ -54,11 +54,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
               selectedIcon: Icon(Icons.history, color: Theme.of(context).colorScheme.primary),
               label: 'Orders',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.admin_panel_settings_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant),
-              selectedIcon: Icon(Icons.admin_panel_settings, color: Theme.of(context).colorScheme.primary),
-              label: 'Admin',
-            ),
           ],
         ),
       ),

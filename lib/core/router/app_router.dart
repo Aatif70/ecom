@@ -10,10 +10,12 @@ import '../../features/admin/view/admin_dashboard_screen.dart';
 import '../../features/wishlist/view/wishlist_screen.dart';
 import '../../shared/widgets/scaffold_with_nav_bar.dart';
 import '../../features/auth/view/login_screen.dart';
+import '../../features/auth/provider/auth_provider.dart';
 import 'router_observer.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final rootNavigatorKey = GlobalKey<NavigatorState>();
+  final authState = ref.watch(authProvider);
   
   return GoRouter(
     navigatorKey: rootNavigatorKey,
@@ -71,16 +73,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
 
-          // Branch 3: Admin
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/admin',
-                builder: (context, state) => const AdminDashboardScreen(),
-              ),
-            ],
-          ),
         ],
+      ),
+      
+      // Admin Route (Top Level)
+      GoRoute(
+        path: '/admin',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const AdminDashboardScreen(),
       ),
       
       // Full screen routes
@@ -103,5 +103,38 @@ final routerProvider = Provider<GoRouter>((ref) {
     observers: [
       AppRouterObserver(),
     ],
+    redirect: (context, state) {
+      final isLoggedIn = authState.isLoggedIn;
+      final user = authState.user;
+      final isLoggingIn = state.uri.toString() == '/login';
+      final isAdminRoute = state.uri.toString().startsWith('/admin');
+
+      // If not logged in and not heading to login, redirect to login
+      if (!isLoggedIn && !isLoggingIn) {
+        return '/login';
+      }
+
+      // If logged in
+      if (isLoggedIn) {
+        final isAdmin = user?.roles.contains('Admin') ?? false;
+
+        // If trying to go to login page, redirect based on role
+        if (isLoggingIn) {
+          return isAdmin ? '/admin' : '/';
+        }
+
+        // If Admin user tries to access client app (not admin routes)
+        if (isAdmin && !isAdminRoute) {
+          return '/admin';
+        }
+
+        // If Client user (wholesaler) tries to access admin routes
+        if (!isAdmin && isAdminRoute) {
+          return '/';
+        }
+      }
+
+      return null;
+    },
   );
 });

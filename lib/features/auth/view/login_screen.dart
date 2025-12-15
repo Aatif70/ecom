@@ -27,7 +27,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
       }
       if (next.isLoggedIn && (previous?.isLoggedIn != true)) {
-         context.go('/'); // Navigate to home
+         final isAdmin = next.user?.roles.contains('Admin') ?? false;
+         if (isAdmin) {
+           context.go('/admin');
+         } else {
+           context.go('/');
+         }
       }
     });
 
