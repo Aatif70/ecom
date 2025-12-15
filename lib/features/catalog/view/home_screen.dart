@@ -27,11 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final productsFuture = ref.watch(designListProvider); // Use the real provider
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        child: const Icon(Icons.support_agent),
-        onPressed: (){},
-      ),
+
       body: CustomScrollView(
         slivers: [
           // Header with Search

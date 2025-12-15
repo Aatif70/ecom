@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/mock_data_service.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../../../shared/providers/products_provider.dart';
+
 import 'brand_list_screen.dart';
 import 'category_list_screen.dart';
 import 'series_list_screen.dart';
@@ -18,14 +18,14 @@ class AdminDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 8,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Admin Dashboard'),
           bottom: const TabBar(
             isScrollable: true,
             tabs: [
-              Tab(text: 'Products'),
+
               Tab(text: 'Orders'),
               Tab(text: 'Brands'),
               Tab(text: 'Categories'),
@@ -49,7 +49,7 @@ class AdminDashboardScreen extends ConsumerWidget {
         ),
         body: const TabBarView(
           children: [
-            _ProductList(),
+
             _OrderList(),
             BrandListScreen(),
             CategoryListScreen(),
@@ -65,32 +65,7 @@ class AdminDashboardScreen extends ConsumerWidget {
   }
 }
 
-class _ProductList extends ConsumerWidget {
-  const _ProductList();
-  
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final productsFuture = ref.watch(productsProvider);
-    return productsFuture.when(
-      data: (products) => ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: products.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ListTile(
-            leading: Image.network(product.images.first, width: 50, height: 50, fit: BoxFit.cover),
-            title: Text(product.title),
-            subtitle: Text('SKU: ${product.sku} | Variants: ${product.variants.length}'),
-            trailing: const Icon(Icons.edit),
-          );
-        },
-      ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
-    );
-  }
-}
+
 
 class _OrderList extends ConsumerWidget {
   const _OrderList();
