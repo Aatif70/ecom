@@ -16,6 +16,8 @@ class Product {
   final List<String> tags;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
+  @JsonKey(name: 'is_new')
+  final bool isNew;
 
   Product({
     required this.id,
@@ -27,6 +29,7 @@ class Product {
     required this.variants,
     required this.tags,
     required this.createdAt,
+    this.isNew = false,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
@@ -46,9 +49,14 @@ class Product {
         }
         return img.imageUrl;
       }).toList(),
-      variants: [], // SizePrices is empty in example
+      variants: design.sizePrices.map((sp) => ProductVariant(
+        size: sp.sizeName,
+        mrp: sp.price,
+        availableQty: sp.stock,
+      )).toList(),
       tags: [design.seriesName, design.brandName],
       createdAt: design.createdAt,
+      isNew: design.isNew,
     );
   }
 }

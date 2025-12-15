@@ -18,6 +18,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       .toList(),
   tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
   createdAt: DateTime.parse(json['created_at'] as String),
+  isNew: json['is_new'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
@@ -30,6 +31,7 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
   'variants': instance.variants,
   'tags': instance.tags,
   'created_at': instance.createdAt.toIso8601String(),
+  'is_new': instance.isNew,
 };
 
 ProductVariant _$ProductVariantFromJson(Map<String, dynamic> json) =>

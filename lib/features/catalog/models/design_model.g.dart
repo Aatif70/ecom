@@ -39,7 +39,9 @@ Design _$DesignFromJson(Map<String, dynamic> json) => Design(
   images: (json['Images'] as List<dynamic>)
       .map((e) => DesignImage.fromJson(e as Map<String, dynamic>))
       .toList(),
-  sizePrices: json['SizePrices'] as List<dynamic>,
+  sizePrices: (json['SizePrices'] as List<dynamic>)
+      .map((e) => SizePrice.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$DesignToJson(Design instance) => <String, dynamic>{
@@ -70,3 +72,21 @@ Map<String, dynamic> _$DesignImageToJson(DesignImage instance) =>
       'DesignId': instance.designId,
       'ImageUrl': instance.imageUrl,
     };
+
+SizePrice _$SizePriceFromJson(Map<String, dynamic> json) => SizePrice(
+  pspId: (json['PSPId'] as num).toInt(),
+  designId: (json['DesignId'] as num).toInt(),
+  sizeId: (json['SizeId'] as num).toInt(),
+  sizeName: json['SizeName'] as String,
+  price: (json['Price'] as num).toDouble(),
+  stock: (json['Stock'] as num).toInt(),
+);
+
+Map<String, dynamic> _$SizePriceToJson(SizePrice instance) => <String, dynamic>{
+  'PSPId': instance.pspId,
+  'DesignId': instance.designId,
+  'SizeId': instance.sizeId,
+  'SizeName': instance.sizeName,
+  'Price': instance.price,
+  'Stock': instance.stock,
+};

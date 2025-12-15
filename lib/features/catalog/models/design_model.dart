@@ -51,7 +51,7 @@ class Design {
   @JsonKey(name: 'Images')
   final List<DesignImage> images;
   @JsonKey(name: 'SizePrices')
-  final List<dynamic> sizePrices; // Placeholder for now as it's empty in example
+  final List<SizePrice> sizePrices;
 
   Design({
     required this.designId,
@@ -90,4 +90,32 @@ class DesignImage {
 
   factory DesignImage.fromJson(Map<String, dynamic> json) => _$DesignImageFromJson(json);
   Map<String, dynamic> toJson() => _$DesignImageToJson(this);
+}
+
+@JsonSerializable()
+class SizePrice {
+  @JsonKey(name: 'PSPId')
+  final int pspId;
+  @JsonKey(name: 'DesignId')
+  final int designId;
+  @JsonKey(name: 'SizeId')
+  final int sizeId;
+  @JsonKey(name: 'SizeName')
+  final String sizeName;
+  @JsonKey(name: 'Price')
+  final double price;
+  @JsonKey(name: 'Stock')
+  final int stock;
+
+  SizePrice({
+    required this.pspId,
+    required this.designId,
+    required this.sizeId,
+    required this.sizeName,
+    required this.price,
+    required this.stock,
+  });
+
+  factory SizePrice.fromJson(Map<String, dynamic> json) => _$SizePriceFromJson(json);
+  Map<String, dynamic> toJson() => _$SizePriceToJson(this);
 }
