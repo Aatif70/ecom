@@ -50,6 +50,7 @@ class Product {
         return img.imageUrl;
       }).toList(),
       variants: design.sizePrices.map((sp) => ProductVariant(
+        sizeId: sp.sizeId,
         size: sp.sizeName,
         mrp: sp.price,
         availableQty: sp.stock,
@@ -63,12 +64,15 @@ class Product {
 
 @JsonSerializable()
 class ProductVariant {
+  @JsonKey(name: 'size_id')
+  final int sizeId;
   final String size;
   final double mrp;
   @JsonKey(name: 'available_qty')
   final int availableQty;
 
   ProductVariant({
+    this.sizeId = 0,
     required this.size,
     required this.mrp,
     required this.availableQty,

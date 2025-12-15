@@ -36,6 +36,7 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
 
 ProductVariant _$ProductVariantFromJson(Map<String, dynamic> json) =>
     ProductVariant(
+      sizeId: (json['size_id'] as num).toInt(),
       size: json['size'] as String,
       mrp: (json['mrp'] as num).toDouble(),
       availableQty: (json['available_qty'] as num).toInt(),
@@ -43,6 +44,7 @@ ProductVariant _$ProductVariantFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ProductVariantToJson(ProductVariant instance) =>
     <String, dynamic>{
+      'size_id': instance.sizeId,
       'size': instance.size,
       'mrp': instance.mrp,
       'available_qty': instance.availableQty,

@@ -5,7 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/services/mock_data_service.dart';
 import '../../../shared/models/product.dart';
-import '../../cart/notifiers/cart_notifier.dart';
+import '../../cart/providers/cart_provider.dart';
 import '../../catalog/providers/catalog_provider.dart';
 
 import '../../../core/theme/app_theme.dart';
@@ -249,7 +249,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           ),
                           onPressed: (variant.availableQty > 0) 
                             ? () {
-                                ref.read(cartProvider.notifier).addToCart(product, variant, _quantity);
+                                final designId = int.tryParse(product.id) ?? 0;
+                                ref.read(cartProvider.notifier).addToCart(
+                                  designId: designId, 
+                                  sizeId: variant.sizeId, 
+                                  quantity: _quantity
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Added to Cart'),
