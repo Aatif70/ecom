@@ -8,9 +8,9 @@ import 'brand_list_screen.dart';
 import 'category_list_screen.dart';
 import 'series_list_screen.dart';
 import 'design_list_screen.dart';
-
 import 'size_list_screen.dart';
 import 'product_size_price_list_screen.dart';
+import 'user_list_screen.dart';
 
 class AdminDashboardScreen extends ConsumerWidget {
   const AdminDashboardScreen({super.key});
@@ -18,21 +18,21 @@ class AdminDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 7,
+      length: 8,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Admin Dashboard'),
           bottom: const TabBar(
             isScrollable: true,
             tabs: [
-
               Tab(text: 'Orders'),
               Tab(text: 'Brands'),
               Tab(text: 'Categories'),
               Tab(text: 'Series'),
-              Tab(text: 'Designs'),
+              Tab(text: 'Products'),
               Tab(text: 'Sizes'),
               Tab(text: 'Prices'),
+              Tab(text: 'Users'),
             ],
           ),
           actions: [
@@ -49,7 +49,6 @@ class AdminDashboardScreen extends ConsumerWidget {
         ),
         body: const TabBarView(
           children: [
-
             _OrderList(),
             BrandListScreen(),
             CategoryListScreen(),
@@ -57,6 +56,7 @@ class AdminDashboardScreen extends ConsumerWidget {
             DesignListScreen(),
             SizeListScreen(),
             ProductSizePriceListScreen(),
+            UserManagementScreen(),
           ],
         ),
 

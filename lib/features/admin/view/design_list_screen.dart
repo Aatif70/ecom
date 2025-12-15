@@ -151,7 +151,7 @@ class _DesignItemState extends ConsumerState<_DesignItem> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text("Design #: ${widget.design.designNumber}", style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                      Text("Product #: ${widget.design.designNumber}", style: TextStyle(color: Colors.grey[600], fontSize: 12)),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 8,

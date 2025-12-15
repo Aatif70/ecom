@@ -240,3 +240,9 @@ final allSizesProvider = FutureProvider.autoDispose<List<Size>>((ref) async {
   return adminService.getSizes(1, 100);
 });
 
+// --- Users ---
+
+final usersProvider = FutureProvider.autoDispose.family<List<User>, int>((ref, page) async {
+  final adminService = ref.watch(adminServiceProvider);
+  return adminService.getUsers(page, 10);
+});

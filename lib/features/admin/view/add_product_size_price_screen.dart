@@ -74,6 +74,7 @@ class _AddProductSizePriceScreenState extends ConsumerState<AddProductSizePriceS
                 data: (designs) => DropdownButtonFormField<int>(
                   decoration: const InputDecoration(labelText: 'Select Design', border: OutlineInputBorder()),
                   value: _selectedDesignId,
+                  isExpanded: true,
                   items: designs.map((d) => DropdownMenuItem(
                     value: d.id,
                     child: Row(
@@ -91,7 +92,9 @@ class _AddProductSizePriceScreenState extends ConsumerState<AddProductSizePriceS
                            ),
                            const SizedBox(width: 12),
                         ],
-                        Expanded(child: Text('${d.title} (${d.designNumber})', overflow: TextOverflow.ellipsis)),
+                        Expanded(
+                          child: Text('${d.title} (${d.designNumber})', overflow: TextOverflow.ellipsis),
+                        ),
                       ],
                     ),
                   )).toList(),

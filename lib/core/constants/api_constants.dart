@@ -2,6 +2,7 @@ class ApiConstants {
   // TODO: Replace with actual base URL
   static const String baseUrl = 'https://fair-enterprises.in';
   static const String loginEndpoint = '/api/Auth/login';
+  static const String registerEndpoint = '/api/Auth/register';
   static const String logoutEndpoint = '/api/Auth/logout';
   static const String brandEndpoint = '/api/Brand';
   static const String categoryEndpoint = '/api/Category';
@@ -13,4 +14,5 @@ class ApiConstants {
   static const String cartItemsEndpoint = '/api/Cart/items';
   static const String wishlistEndpoint = '/api/Wishlist';
   static const String myWishlistEndpoint = '/api/Wishlist/my-wishlist';
+  static const String userEndpoint = '/api/User';
 }

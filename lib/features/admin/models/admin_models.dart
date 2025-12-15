@@ -191,3 +191,29 @@ class ProductSizePrice {
     );
   }
 }
+
+class User {
+  final int userId;
+  final String mobile;
+  final String email;
+  final String fullName;
+  final DateTime createdAt;
+
+  User({
+    required this.userId,
+    required this.mobile,
+    required this.email,
+    required this.fullName,
+    required this.createdAt,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      userId: json['UserId'] ?? 0,
+      mobile: json['Mobile'] ?? '',
+      email: json['Email'] ?? '',
+      fullName: json['FullName'] ?? '',
+      createdAt: DateTime.parse(json['CreatedAt'] ?? DateTime.now().toIso8601String()),
+    );
+  }
+}

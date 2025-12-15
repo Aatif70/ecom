@@ -46,7 +46,7 @@ class DesignDetailScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Design #${design.designNumber}',
+                        'Product #${design.designNumber}',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
@@ -88,7 +88,7 @@ class DesignDetailScreen extends ConsumerWidget {
             
             // Images Section
             const Text(
-              'Design Images',
+              'Product Images',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

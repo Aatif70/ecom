@@ -80,7 +80,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('Add Design'),
+        title: const Text('Add Product'),
         backgroundColor: Colors.white,
         elevation: 0,
         foregroundColor: Colors.black,
@@ -91,7 +91,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Create New Design",
+              "Create New Product",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              "Fill in the details to create a new design.",
+              "Fill in the details to create a new Product.",
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
             const SizedBox(height: 32),
@@ -108,7 +108,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
             // Title
             _buildTextField(
               controller: _titleController,
-              label: 'Design Title',
+              label: 'Product Title',
               icon: Icons.title,
             ),
             const SizedBox(height: 16),
@@ -116,7 +116,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
             // Design Number
             _buildTextField(
               controller: _designNumberController,
-              label: 'Design Number',
+              label: 'Product Number',
               icon: Icons.numbers,
             ),
             const SizedBox(height: 16),
@@ -192,7 +192,7 @@ class _AddDesignScreenState extends ConsumerState<AddDesignScreen> {
                 child: state.isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
-                        'Create Design',
+                        'Create Product',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
               ),

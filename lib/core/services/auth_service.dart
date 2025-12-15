@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'api_client.dart';
 import '../constants/api_constants.dart';
 import '../../shared/models/user.dart';
+import '../../features/auth/models/register_models.dart';
 
 class AuthService {
   final ApiClient _client = ApiClient();
@@ -32,6 +33,26 @@ class AuthService {
     }
   }
 
+  Future<RegisterResponse> registerSeller(RegisterRequest request) async {
+    try {
+      final response = await _client.post(
+        Uri.parse('${ApiConstants.baseUrl}${ApiConstants.registerEndpoint}'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(request.toJson()),
+      );
+
+      final Map<String, dynamic> body = jsonDecode(response.body);
+      return RegisterResponse.fromJson(body);
+    } catch (e) {
+      // Return a failure response in case of network error or parse error
+      return RegisterResponse(
+        success: false,
+        message: 'Network error: $e',
+        statusCode: 500,
+      );
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _client.post(
@@ -45,3 +66,4 @@ class AuthService {
   }
 
 }
+
