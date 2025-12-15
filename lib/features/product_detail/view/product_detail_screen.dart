@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/services/mock_data_service.dart';
 import '../../../shared/models/product.dart';
 import '../../cart/notifiers/cart_notifier.dart';
+import '../../catalog/providers/catalog_provider.dart';
 
 import '../../../core/theme/app_theme.dart';
 
@@ -41,13 +42,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           
           // Initialize selection only once
           if (_selectedVariant == null && product.variants.isNotEmpty) {
-             // We can safely set this during build in this specific case or use post frame
-             // But using a local variable initialized from the data is cleaner if stateless,
-             // however since we need mutable state for selection, we check for null.
              _selectedVariant = product.variants.first;
+          } else if (product.variants.isEmpty) {
+             // Create a dummy variant if none exist (for UI safety)
+             _selectedVariant = ProductVariant(size: "Free", mrp: 0, availableQty: 0);
           }
 
-          final variant = _selectedVariant ?? product.variants.first;
+          final variant = _selectedVariant ?? (product.variants.isNotEmpty ? product.variants.first : ProductVariant(size: "Free", mrp: 0, availableQty: 0));
 
           return Column(
             children: [
@@ -277,8 +278,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
 // Provider for fetching specific product details
 final productDetailsProvider = FutureProvider.family<Product?, String>((ref, id) async {
-  final service = ref.watch(mockDataServiceProvider);
-  // Ensure products are loaded first
-  await service.getProducts(); 
-  return service.getProductById(id);
+  final products = await ref.watch(designListProvider.future);
+  try {
+    return products.firstWhere((p) => p.id == id);
+  } catch (e) {
+    return null;
+  }
 });

@@ -1,0 +1,48 @@
+import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/constants/api_constants.dart';
+import '../../../core/services/api_client.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/services/storage_service.dart';
+import '../../auth/provider/auth_provider.dart';
+import '../models/design_model.dart';
+
+final catalogServiceProvider = Provider<CatalogService>((ref) {
+  final apiClient = ApiClient();
+  final authService = ref.read(authServiceProvider);
+  final storageService = ref.read(storageServiceProvider);
+  return CatalogService(apiClient, authService, storageService);
+});
+
+class CatalogService {
+  final ApiClient _apiClient;
+  final AuthService _authService;
+  final StorageService _storageService;
+
+  CatalogService(this._apiClient, this._authService, this._storageService);
+
+  Future<List<Design>> getDesigns({int page = 1, int pageSize = 10}) async {
+    final token = await _storageService.getToken();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.designEndpoint}')
+        .replace(queryParameters: {
+      'page': page.toString(),
+      'pageSize': pageSize.toString(),
+    });
+
+    final response = await _apiClient.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final designResponse = DesignResponse.fromJson(json);
+      return designResponse.data;
+    } else {
+      throw Exception('Failed to load designs: ${response.statusCode}');
+    }
+  }
+}

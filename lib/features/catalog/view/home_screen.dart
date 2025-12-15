@@ -6,6 +6,7 @@ import '../../../core/services/mock_data_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../shared/models/product.dart';
 import '../../../shared/widgets/product_card.dart';
+import '../providers/catalog_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -28,8 +29,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String _searchQuery = "";
 
   @override
+  @override
   Widget build(BuildContext context) {
-    final productsFuture = ref.watch(productsProvider); // Use the provider
+    final productsFuture = ref.watch(designListProvider); // Use the real provider
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -233,7 +235,3 @@ class _CategoryItem extends StatelessWidget {
   }
 }
 
-final productsProvider = FutureProvider<List<Product>>((ref) async {
-  final service = ref.watch(mockDataServiceProvider);
-  return service.getProducts();
-});

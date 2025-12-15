@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../features/catalog/models/design_model.dart';
+import '../../core/constants/api_constants.dart';
 
 part 'product.g.dart';
 
@@ -29,6 +31,26 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+
+  factory Product.fromDesign(Design design) {
+    return Product(
+      id: design.designId.toString(),
+      sku: design.designNumber,
+      title: design.title,
+      category: design.categoryName,
+      description: '', // Not provided in API yet
+      images: design.images.map((img) {
+        // Convert relative URL to absolute URL if needed
+        if (img.imageUrl.startsWith('/')) {
+          return '${ApiConstants.baseUrl}${img.imageUrl}';
+        }
+        return img.imageUrl;
+      }).toList(),
+      variants: [], // SizePrices is empty in example
+      tags: [design.seriesName, design.brandName],
+      createdAt: design.createdAt,
+    );
+  }
 }
 
 @JsonSerializable()

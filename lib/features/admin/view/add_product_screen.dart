@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/services/mock_data_service.dart';
 import '../../../shared/models/product.dart';
-import '../../catalog/view/home_screen.dart'; // To refresh list
+import '../../../shared/providers/products_provider.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   const AddProductScreen({super.key});
