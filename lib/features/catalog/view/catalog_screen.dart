@@ -76,7 +76,12 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> with SingleTicker
 
           final allProducts = snapshot.data ?? [];
 
-          return TabBarView(
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(mockDataServiceProvider);
+              setState(() {});
+            },
+            child: TabBarView(
             controller: _tabController,
             children: categories.map((category) {
               final categoryProducts = allProducts.where((p) => p.category == category).toList();
@@ -99,6 +104,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> with SingleTicker
                 },
               );
             }).toList(),
+          ),
           );
         },
       ),

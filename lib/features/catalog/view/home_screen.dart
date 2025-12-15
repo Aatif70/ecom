@@ -28,7 +28,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
 
-      body: CustomScrollView(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // Refresh both products and categories
+          ref.invalidate(designListProvider);
+          ref.invalidate(categoryListProvider);
+          await Future.wait([
+            ref.read(designListProvider.future),
+            ref.read(categoryListProvider.future),
+          ]);
+        },
+        child: CustomScrollView(
         slivers: [
           // Header with Search
           SliverToBoxAdapter(
@@ -180,6 +190,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           
           const SliverToBoxAdapter(child: SizedBox(height: 80)), // Bottom padding
         ],
+      ),
       ),
     );
   }

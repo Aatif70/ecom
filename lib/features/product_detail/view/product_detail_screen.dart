@@ -61,7 +61,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
           final variant = _selectedVariant ?? (product.variants.isNotEmpty ? product.variants.first : ProductVariant(size: "Free", mrp: 0, availableQty: 0));
 
-          return Column(
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(productDetailsProvider(widget.id));
+              await ref.read(productDetailsProvider(widget.id).future);
+            },
+            child: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
@@ -283,6 +288,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 ),
               ),
             ],
+          ),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),

@@ -22,7 +22,12 @@ class OrdersScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: ordersFuture.when(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(ordersProvider);
+          await ref.read(ordersProvider.future);
+        },
+        child: ordersFuture.when(
         data: (orders) => orders.isEmpty
             ? const Center(child: Text('No orders found.'))
             : ListView.separated(
@@ -36,6 +41,7 @@ class OrdersScreen extends ConsumerWidget {
               ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
       ),
     );
   }

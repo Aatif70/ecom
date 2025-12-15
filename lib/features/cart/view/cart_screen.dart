@@ -20,7 +20,12 @@ class CartScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Shopping Cart'),
       ),
-      body: cartAsync.when(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(cartProvider);
+          await ref.read(cartProvider.future);
+        },
+        child: cartAsync.when(
         data: (cart) {
           if (cart.cartItems.isEmpty) {
             return _buildEmptyCart(context);
@@ -44,6 +49,7 @@ class CartScreen extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
       ),
     );
   }

@@ -25,7 +25,12 @@ class _ProductSizePriceListScreenState extends ConsumerState<ProductSizePriceLis
     final pspAsync = ref.watch(productSizePricesProvider(_page));
 
     return Scaffold(
-      body: pspAsync.when(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(productSizePricesProvider(_page));
+          await ref.read(productSizePricesProvider(_page).future);
+        },
+        child: pspAsync.when(
         data: (items) => items.isEmpty
             ? const Center(child: Text('No Product Size Prices found'))
             : ListView.separated(
@@ -64,6 +69,7 @@ class _ProductSizePriceListScreenState extends ConsumerState<ProductSizePriceLis
               ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

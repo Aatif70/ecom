@@ -87,7 +87,12 @@ class _SizeListScreenState extends ConsumerState<SizeListScreen> {
     final sizesAsync = ref.watch(sizesProvider(_page));
 
     return Scaffold(
-      body: sizesAsync.when(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(sizesProvider(_page));
+          await ref.read(sizesProvider(_page).future);
+        },
+        child: sizesAsync.when(
         data: (sizes) => sizes.isEmpty
             ? const Center(child: Text('No sizes found'))
             : ListView.separated(
@@ -102,7 +107,7 @@ class _SizeListScreenState extends ConsumerState<SizeListScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Colors.blue.withValues(alpha: 0.1),
+                        backgroundColor: Colors.blue.withOpacity(0.1),
                         child: Text(
                           size.sizeLabel.substring(0, 1),
                           style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
@@ -119,6 +124,7 @@ class _SizeListScreenState extends ConsumerState<SizeListScreen> {
               ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddSizeDialog,

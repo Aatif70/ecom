@@ -19,7 +19,12 @@ class WishlistScreen extends ConsumerWidget {
         title: const Text('My Wishlist'),
         elevation: 0,
       ),
-      body: wishlistAsync.when(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(wishlistProvider);
+          await ref.read(wishlistProvider.future);
+        },
+        child: wishlistAsync.when(
         data: (items) => items.isEmpty
             ? _buildEmptyState(context)
             : ListView.separated(
@@ -33,6 +38,7 @@ class WishlistScreen extends ConsumerWidget {
               ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
       ),
     );
   }

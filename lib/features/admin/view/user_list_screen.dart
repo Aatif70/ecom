@@ -62,7 +62,12 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
     final usersAsync = ref.watch(usersProvider(_currentPage));
 
     return Scaffold(
-      body: usersAsync.when(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(usersProvider(_currentPage));
+          await ref.read(usersProvider(_currentPage).future);
+        },
+        child: usersAsync.when(
         data: (users) {
           if (users.isEmpty) {
             return const Center(
@@ -232,6 +237,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
             ],
           ),
         ),
+      ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: widget.onAddUser,
