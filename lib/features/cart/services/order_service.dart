@@ -6,6 +6,7 @@ import '../../../core/services/auth_service.dart';
 import '../../../core/services/storage_service.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../models/order_model.dart';
+import '../models/orders_list_model.dart';
 
 final orderServiceProvider = Provider<OrderService>((ref) {
   final apiClient = ApiClient();
@@ -40,6 +41,29 @@ class OrderService {
       return orderResponse.data;
     } else {
       throw Exception('Failed to place order: ${response.statusCode}');
+    }
+  }
+
+  Future<List<Order>> getMyOrders({int page = 1, int pageSize = 10}) async {
+    final token = await _storageService.getToken();
+    final uri = Uri.parse(
+      '${ApiConstants.baseUrl}${ApiConstants.myOrdersEndpoint}?page=$page&pageSize=$pageSize',
+    );
+
+    final response = await _apiClient.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final ordersResponse = OrdersListResponse.fromJson(json);
+      return ordersResponse.data;
+    } else {
+      throw Exception('Failed to fetch orders: ${response.statusCode}');
     }
   }
 }

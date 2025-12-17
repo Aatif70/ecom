@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/services/mock_data_service.dart';
 import '../../../shared/models/product.dart';
 import '../../cart/providers/cart_provider.dart';
 import '../../catalog/providers/catalog_provider.dart';
 import '../../wishlist/providers/wishlist_provider.dart';
+
 
 import '../../../core/theme/app_theme.dart';
 
