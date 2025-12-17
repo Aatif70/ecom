@@ -179,6 +179,7 @@ class ProductSizePrice {
   final int sizeId;
   final String sizeName;
   final double price;
+  final bool isActive;
 
   ProductSizePrice({
     required this.pspId,
@@ -187,6 +188,7 @@ class ProductSizePrice {
     required this.sizeId,
     required this.sizeName,
     required this.price,
+    this.isActive = true,
   });
 
   factory ProductSizePrice.fromJson(Map<String, dynamic> json) {
@@ -197,6 +199,7 @@ class ProductSizePrice {
       sizeId: json['SizeId'] ?? 0,
       sizeName: json['SizeName'] ?? '',
       price: (json['Price'] ?? 0).toDouble(),
+      isActive: json['IsActive'] ?? true,
     );
   }
 }

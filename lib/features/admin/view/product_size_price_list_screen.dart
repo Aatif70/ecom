@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/admin_provider.dart';
 import 'add_product_size_price_screen.dart';
+import 'edit_product_size_price_screen.dart';
 
 class ProductSizePriceListScreen extends ConsumerStatefulWidget {
   const ProductSizePriceListScreen({super.key});
@@ -43,25 +44,38 @@ class _ProductSizePriceListScreenState extends ConsumerState<ProductSizePriceLis
                   return Card(
                     elevation: 2,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.amber.withValues(alpha: 0.1),
-                        child: Text(
-                          item.sizeName,
-                          style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+                    child: InkWell(
+                      onTap: () {
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditProductSizePriceScreen(productSizePrice: item),
+                          ),
+                        ).then((_) {
+                           ref.invalidate(productSizePricesProvider(_page));
+                        });
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.amber.withValues(alpha: 0.1),
+                          child: Text(
+                            item.sizeName,
+                            style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      title: Text(
-                        item.designName,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text('Size: ${item.sizeName}'),
-                      trailing: Text(
-                        '₹${item.price.toStringAsFixed(2)}',
-                         style: const TextStyle(
-                           fontWeight: FontWeight.bold,
-                           color: Colors.green
-                         ),
+                        title: Text(
+                          item.designName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text('Size: ${item.sizeName}'),
+                        trailing: Text(
+                          '₹${item.price.toStringAsFixed(2)}',
+                           style: const TextStyle(
+                             fontWeight: FontWeight.bold,
+                             color: Colors.green
+                           ),
+                        ),
                       ),
                     ),
                   );

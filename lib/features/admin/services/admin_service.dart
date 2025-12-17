@@ -557,6 +557,49 @@ class AdminService {
     }
   }
 
+  Future<Map<String, dynamic>> updateSize(int id, String sizeLabel) async {
+    final headers = await _getHeaders();
+    headers['Content-Type'] = 'application/json';
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.sizeEndpoint}/$id');
+    
+    final body = {'SizeLabel': sizeLabel};
+    FancyLogger.apiRequest('PUT', uri.toString(), body);
+
+    final response = await http.put(
+      uri,
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    FancyLogger.apiResponse('PUT', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to update size: ${response.body}');
+    }
+  }
+
+  Future<void> deleteSize(int id) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.sizeEndpoint}/$id');
+
+    FancyLogger.apiRequest('DELETE', uri.toString());
+    final response = await http.delete(uri, headers: headers);
+    FancyLogger.apiResponse('DELETE', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      String errorMessage = 'Failed to delete size';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map<String, dynamic> && body['Message'] != null) {
+          errorMessage = body['Message'];
+        }
+      } catch (_) {}
+      throw Exception(errorMessage);
+    }
+  }
+
   // --- Product Size Price ---
 
   Future<List<ProductSizePrice>> getProductSizePrices(int page, int pageSize) async {
@@ -605,6 +648,52 @@ class AdminService {
       return jsonDecode(response.body);
     } else {
       throw Exception('Failed to add product size price: ${response.body}');
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProductSizePrice(int id, double price, bool isActive) async {
+    final headers = await _getHeaders();
+    headers['Content-Type'] = 'application/json';
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.productSizePriceEndpoint}/$id');
+    
+    final body = {
+      'Price': price,
+      'IsActive': isActive,
+    };
+    FancyLogger.apiRequest('PUT', uri.toString(), body);
+
+    final response = await http.put(
+      uri,
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    FancyLogger.apiResponse('PUT', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to update product size price: ${response.body}');
+    }
+  }
+
+  Future<void> deleteProductSizePrice(int id) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.productSizePriceEndpoint}/$id');
+
+    FancyLogger.apiRequest('DELETE', uri.toString());
+    final response = await http.delete(uri, headers: headers);
+    FancyLogger.apiResponse('DELETE', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      String errorMessage = 'Failed to delete product size price';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map<String, dynamic> && body['Message'] != null) {
+          errorMessage = body['Message'];
+        }
+      } catch (_) {}
+      throw Exception(errorMessage);
     }
   }
 

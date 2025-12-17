@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../provider/admin_provider.dart';
+import 'edit_size_screen.dart';
 
 class SizeListScreen extends ConsumerStatefulWidget {
   const SizeListScreen({super.key});
@@ -105,19 +106,30 @@ class _SizeListScreenState extends ConsumerState<SizeListScreen> {
                   return Card(
                     elevation: 2,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.blue.withValues(alpha: 0.1),
-                        child: Text(
-                          size.sizeLabel.substring(0, 1),
-                          style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
+                    child: InkWell(
+                      onTap: () {
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditSizeScreen(size: size),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.blue.withValues(alpha: 0.1),
+                          child: Text(
+                            size.sizeLabel.substring(0, 1),
+                            style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
+                          ),
                         ),
+                        title: Text(
+                          size.sizeLabel,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                       ),
-                      title: Text(
-                        size.sizeLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                     ),
                   );
                 },

@@ -328,6 +328,30 @@ class SizeController extends StateNotifier<AsyncValue<void>> {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>?> updateSize(int id, String label) async {
+    state = const AsyncLoading();
+    try {
+      final res = await _adminService.updateSize(id, label);
+      state = const AsyncData(null);
+      return res;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return null;
+    }
+  }
+
+  Future<String?> deleteSize(int id) async {
+    state = const AsyncLoading();
+    try {
+      await _adminService.deleteSize(id);
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return e.toString().replaceAll('Exception: ', '');
+    }
+  }
 }
 
 final sizeControllerProvider = StateNotifierProvider<SizeController, AsyncValue<void>>((ref) {
@@ -356,6 +380,30 @@ class ProductSizePriceController extends StateNotifier<AsyncValue<void>> {
     } catch (e, st) {
       state = AsyncError(e, st);
       return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> updateProductSizePrice(int id, double price, bool isActive) async {
+    state = const AsyncLoading();
+    try {
+      final res = await _adminService.updateProductSizePrice(id, price, isActive);
+      state = const AsyncData(null);
+      return res;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return null;
+    }
+  }
+
+  Future<String?> deleteProductSizePrice(int id) async {
+    state = const AsyncLoading();
+    try {
+      await _adminService.deleteProductSizePrice(id);
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return e.toString().replaceAll('Exception: ', '');
     }
   }
 }
