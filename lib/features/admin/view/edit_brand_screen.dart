@@ -272,9 +272,81 @@ class _EditBrandScreenState extends ConsumerState<EditBrandScreen> {
                       ),
               ),
             ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: OutlinedButton(
+                onPressed: state.isLoading ? null : _confirmDelete,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.red,
+                  side: const BorderSide(color: Colors.red),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: const Text(
+                  'Delete Brand',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _confirmDelete() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Brand', style: TextStyle(color: Colors.red)),
+        content: Text(
+          'Are you sure you want to delete "${widget.brand.name}"? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      final error = await ref.read(brandControllerProvider.notifier).deleteBrand(widget.brand.id);
+      
+      if (!mounted) return;
+
+      if (error == null) {
+        // Success
+        ScaffoldMessenger.of(context).showSnackBar(
+           const SnackBar(content: Text('Brand deleted successfully')),
+        );
+        ref.invalidate(brandsProvider(1));
+        Navigator.pop(context); // Close edit screen
+      } else {
+        // Failure
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Cannot Delete'),
+            content: Text(error),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('OK'),
+              )
+            ],
+          ),
+        );
+      }
+    }
   }
 }

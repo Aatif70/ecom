@@ -54,6 +54,18 @@ class BrandController extends StateNotifier<AsyncValue<void>> {
       return null;
     }
   }
+
+  Future<String?> deleteBrand(int id) async {
+    state = const AsyncLoading();
+    try {
+      await _adminService.deleteBrand(id);
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return e.toString().replaceAll('Exception: ', '');
+    }
+  }
 }
 
 final brandControllerProvider = StateNotifierProvider<BrandController, AsyncValue<void>>((ref) {

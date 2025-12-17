@@ -5,9 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../providers/cart_provider.dart';
 import '../models/cart_model.dart';
-import '../../catalog/providers/catalog_provider.dart';
-import '../../../shared/models/product.dart';
-import '../../product_detail/view/product_detail_screen.dart'; // To reuse productDetailsProvider if needed
+
 
 class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
@@ -23,7 +21,7 @@ class CartScreen extends ConsumerWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           // Use ref.refresh for AsyncNotifier instead of invalidate
-          await ref.refresh(cartProvider.future);
+          return ref.refresh(cartProvider.future);
         },
         child: cartAsync.when(
         data: (cart) {
@@ -93,7 +91,7 @@ class CartScreen extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),

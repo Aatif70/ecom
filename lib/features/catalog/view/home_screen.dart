@@ -2,13 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/services/mock_data_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../shared/models/product.dart';
 import '../../../shared/widgets/product_card.dart';
 import '../providers/catalog_provider.dart';
 import '../../../core/constants/api_constants.dart';
-import '../models/category_model.dart';
+
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -21,8 +19,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   String _searchQuery = "";
 
-  @override
-  @override
+
   Widget build(BuildContext context) {
     final productsFuture = ref.watch(designListProvider); // Use the real provider
 
@@ -80,12 +77,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                        borderRadius: BorderRadius.circular(12),
                        boxShadow: [
                          BoxShadow(
-                           color: Colors.black.withOpacity(0.05),
+                           color: Colors.black.withValues(alpha: 0.05),
                            blurRadius: 10,
                            offset: const Offset(0, 4),
                          ),
                        ],
-                       border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                       border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
                      ),
                      child: TextField(
                        onChanged: (value) {
@@ -102,7 +99,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                          suffixIcon: Container(
                            margin: const EdgeInsets.all(8),
                            decoration: BoxDecoration(
-                             color: Theme.of(context).primaryColor.withOpacity(0.1),
+                             color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                              shape: BoxShape.circle,
                            ),
                            child: Icon(Icons.tune, size: 18, color: Theme.of(context).primaryColor),

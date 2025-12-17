@@ -110,6 +110,28 @@ class AdminService {
     }
   }
 
+  Future<void> deleteBrand(int id) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.brandEndpoint}/$id');
+
+    FancyLogger.apiRequest('DELETE', uri.toString());
+    final response = await http.delete(uri, headers: headers);
+    FancyLogger.apiResponse('DELETE', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      String errorMessage = 'Failed to delete brand';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map<String, dynamic> && body['Message'] != null) {
+          errorMessage = body['Message'];
+        }
+      } catch (_) {
+        // Fallback to default message if parsing fails
+      }
+      throw Exception(errorMessage);
+    }
+  }
+
   // --- Categories ---
 
   Future<List<Category>> getCategories(int page, int pageSize) async {

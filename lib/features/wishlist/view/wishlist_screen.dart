@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../providers/wishlist_provider.dart';
 import '../models/wishlist_model.dart';
-// import '../../cart/providers/cart_provider.dart'; // Future integration to move to cart
+
 
 class WishlistScreen extends ConsumerWidget {
   const WishlistScreen({super.key});
@@ -80,7 +80,7 @@ class WishlistScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 10,
                 offset: const Offset(0, 4)
             )

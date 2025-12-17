@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/admin_models.dart';
+
 import '../provider/admin_provider.dart';
 
 class AddProductSizePriceScreen extends ConsumerStatefulWidget {

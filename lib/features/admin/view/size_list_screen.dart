@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/admin_models.dart';
+
 import '../provider/admin_provider.dart';
 
 class SizeListScreen extends ConsumerStatefulWidget {
@@ -11,7 +11,7 @@ class SizeListScreen extends ConsumerStatefulWidget {
 }
 
 class _SizeListScreenState extends ConsumerState<SizeListScreen> {
-  int _page = 1;
+  final int _page = 1;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -107,7 +107,7 @@ class _SizeListScreenState extends ConsumerState<SizeListScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Colors.blue.withOpacity(0.1),
+                        backgroundColor: Colors.blue.withValues(alpha: 0.1),
                         child: Text(
                           size.sizeLabel.substring(0, 1),
                           style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
