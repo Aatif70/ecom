@@ -11,6 +11,7 @@ import 'design_list_screen.dart';
 import 'size_list_screen.dart';
 import 'product_size_price_list_screen.dart';
 import 'user_list_screen.dart';
+import 'profile_screen.dart';
 
 class AdminDashboardScreen extends ConsumerWidget {
   const AdminDashboardScreen({super.key});
@@ -37,12 +38,12 @@ class AdminDashboardScreen extends ConsumerWidget {
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () async {
-                 await ref.read(authProvider.notifier).logout();
-                 if (context.mounted) {
-                   context.go('/login');
-                 }
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                );
               },
             ),
           ],

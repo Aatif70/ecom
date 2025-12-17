@@ -26,14 +26,24 @@ class FancyLogger {
     _logger.d('[NAV] $message');
   }
 
-  static void apiRequest(String method, String url, [dynamic body]) {
+  static void apiRequest(String method, String url, [dynamic body, Map<String, String>? headers]) {
     // using 'w' (warning) color (usually yellow/orange) for requests to make them stand out
     String msg = '$method $url';
+    if (headers != null) {
+      // Filter out sensitive info like full token if needed, but for debugging we might want to see it exists
+      final safeHeaders = Map<String, String>.from(headers);
+      if (safeHeaders.containsKey('Authorization')) {
+        safeHeaders['Authorization'] = safeHeaders['Authorization']!.substring(0, min(20, safeHeaders['Authorization']!.length)) + '...';
+      }
+      msg += '\nHeaders: $safeHeaders';
+    }
     if (body != null) {
       msg += '\nBody: $body';
     }
     _logger.w('[API-REQ] $msg');
   }
+
+  static int min(int a, int b) => a < b ? a : b;
 
   static void apiResponse(String method, String url, int statusCode, [dynamic body]) {
     final bool isSuccess = statusCode >= 200 && statusCode < 300;
