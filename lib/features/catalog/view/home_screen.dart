@@ -19,7 +19,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   String _searchQuery = "";
 
-
+  @override
   Widget build(BuildContext context) {
     final productsFuture = ref.watch(designListProvider); // Use the real provider
 
@@ -39,36 +39,80 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         slivers: [
           // Header with Search
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   const SizedBox(height: 4),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       Text(
-                         "HN Kids Apparel",
-                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                           fontWeight: FontWeight.bold, 
-                           color: Theme.of(context).primaryColor
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                     const SizedBox(height: 8),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text(
+                               "HN Kids Apparel",
+                               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                 fontWeight: FontWeight.bold, 
+                                 color: Theme.of(context).primaryColor,
+                                 letterSpacing: -0.5,
+                               )
+                             ),
+                             const SizedBox(height: 4),
+                             Text(
+                               "Wholesale Shopping",
+                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                 color: Colors.grey[600],
+                               )
+                             ),
+                           ],
+                         ),
+                         Row(
+                           children: [
+                             Container(
+                               decoration: BoxDecoration(
+                                 color: Colors.white,
+                                 borderRadius: BorderRadius.circular(12),
+                                 boxShadow: [
+                                   BoxShadow(
+                                     color: Colors.black.withValues(alpha: 0.05),
+                                     blurRadius: 8,
+                                     offset: const Offset(0, 2),
+                                   ),
+                                 ],
+                               ),
+                               child: IconButton(
+                                 onPressed: () => context.push('/wishlist'),
+                                 icon: const Icon(Icons.favorite_border),
+                                 color: Theme.of(context).primaryColor,
+                               ),
+                             ),
+                             const SizedBox(width: 8),
+                             Container(
+                               decoration: BoxDecoration(
+                                 color: Colors.white,
+                                 borderRadius: BorderRadius.circular(12),
+                                 boxShadow: [
+                                   BoxShadow(
+                                     color: Colors.black.withValues(alpha: 0.05),
+                                     blurRadius: 8,
+                                     offset: const Offset(0, 2),
+                                   ),
+                                 ],
+                               ),
+                               child: IconButton(
+                                 onPressed: () => context.push('/cart'),
+                                 icon: const Icon(Icons.shopping_bag_outlined),
+                                 color: Theme.of(context).primaryColor,
+                               ),
+                             ),
+                           ],
                          )
-                       ),
-                       Row(
-                         children: [
-                           IconButton(
-                             onPressed: () => context.push('/wishlist'),
-                             icon: const Icon(Icons.favorite_border),
-                           ),
-                           IconButton(
-                             onPressed: () => context.push('/cart'),
-                             icon: const Icon(Icons.shopping_bag_outlined),
-                           ),
-                         ],
-                       )
-                     ],
-                   ),
+                       ],
+                     ),
                    const SizedBox(height: 16),
                    Container(
                      height: 50,
@@ -148,10 +192,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                    ],
                     Text(_searchQuery.isEmpty ? 'New Arrivals' : 'Search Results', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
-                ],
-              ),
-            ),
-          ),
+                   ],
+                 ),
+               ),
+             ),
+           ),
           
           // Products Grid
           productsFuture.when(
@@ -221,7 +266,8 @@ class _CategoryItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        context.go('/tab-catalog?category=${Uri.encodeComponent(label)}');
+        // Category filtering can be implemented here if needed
+        // For now, categories are just visual indicators
       },
       borderRadius: BorderRadius.circular(8),
       child: Column(

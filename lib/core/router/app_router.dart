@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/catalog/view/catalog_screen.dart';
 import '../../features/catalog/view/home_screen.dart';
 import '../../features/product_detail/view/product_detail_screen.dart';
 import '../../features/cart/view/cart_screen.dart';
 import '../../features/orders/view/orders_screen.dart';
 import '../../features/admin/view/admin_dashboard_screen.dart';
 import '../../features/wishlist/view/wishlist_screen.dart';
+import '../../features/profile/view/profile_screen.dart';
 import '../../shared/widgets/scaffold_with_nav_bar.dart';
 import '../../features/auth/view/login_screen.dart';
 import '../../features/auth/provider/auth_provider.dart';
@@ -48,16 +48,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           
-          // Branch 1: Catalog
+          // Branch 1: Profile
            StatefulShellBranch(
              routes: [
                 GoRoute(
-                 path: '/tab-catalog', 
-                 name: 'catalog',
-                 builder: (context, state) {
-                   final category = state.uri.queryParameters['category'];
-                   return CatalogScreen(initialCategory: category);
-                 },
+                 path: '/profile', 
+                 name: 'profile',
+                 builder: (context, state) => const ProfileScreen(),
                ),
              ],
            ),

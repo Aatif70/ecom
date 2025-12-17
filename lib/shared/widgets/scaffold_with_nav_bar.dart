@@ -45,9 +45,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
               label: 'Home',
             ),
             NavigationDestination(
-               icon: Icon(Icons.grid_view_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant),
-               selectedIcon: Icon(Icons.grid_view, color: Theme.of(context).colorScheme.primary),
-               label: 'Catalog',
+               icon: Icon(Icons.person_outline, color: Theme.of(context).colorScheme.onSurfaceVariant),
+               selectedIcon: Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
+               label: 'Profile',
             ),
             NavigationDestination(
               icon: Icon(Icons.history_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant),
