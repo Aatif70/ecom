@@ -722,4 +722,64 @@ class AdminService {
       throw Exception('Failed to load users: ${response.statusCode}');
     }
   }
+
+  Future<Map<String, dynamic>> updateUser({
+    required int userId,
+    required String mobile,
+    required String email,
+    required String fullName,
+    required String shopName,
+    required String address,
+    required String gst,
+    required bool isActive,
+  }) async {
+    final headers = await _getHeaders();
+    headers['Content-Type'] = 'application/json';
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userEndpoint}/$userId');
+    
+    final body = {
+      'Mobile': mobile,
+      'Email': email,
+      'FullName': fullName,
+      'ShopName': shopName,
+      'Address': address,
+      'GST': gst,
+      'IsActive': isActive,
+    };
+    FancyLogger.apiRequest('PUT', uri.toString(), body);
+
+    final response = await http.put(
+      uri,
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    FancyLogger.apiResponse('PUT', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to update user: ${response.body}');
+    }
+  }
+
+  Future<void> deleteUser(int userId) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userEndpoint}/$userId');
+
+    FancyLogger.apiRequest('DELETE', uri.toString());
+    final response = await http.delete(uri, headers: headers);
+    FancyLogger.apiResponse('DELETE', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      String errorMessage = 'Failed to delete user';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map<String, dynamic> && body['Message'] != null) {
+          errorMessage = body['Message'];
+        }
+      } catch (_) {}
+      throw Exception(errorMessage);
+    }
+  }
 }

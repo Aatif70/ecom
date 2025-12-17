@@ -159,9 +159,7 @@ class _SellerRegistrationFormState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register New Seller'),
-      ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Form(

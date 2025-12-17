@@ -209,6 +209,10 @@ class User {
   final String mobile;
   final String email;
   final String fullName;
+  final String shopName;
+  final String address;
+  final String gst;
+  final bool isActive;
   final DateTime createdAt;
 
   User({
@@ -216,6 +220,10 @@ class User {
     required this.mobile,
     required this.email,
     required this.fullName,
+    this.shopName = '',
+    this.address = '',
+    this.gst = '',
+    this.isActive = true,
     required this.createdAt,
   });
 
@@ -225,7 +233,23 @@ class User {
       mobile: json['Mobile'] ?? '',
       email: json['Email'] ?? '',
       fullName: json['FullName'] ?? '',
+      shopName: json['ShopName'] ?? '',
+      address: json['Address'] ?? '',
+      gst: json['GST'] ?? '',
+      isActive: json['IsActive'] ?? true,
       createdAt: DateTime.parse(json['CreatedAt'] ?? DateTime.now().toIso8601String()),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Mobile': mobile,
+      'Email': email,
+      'FullName': fullName,
+      'ShopName': shopName,
+      'Address': address,
+      'GST': gst,
+      'IsActive': isActive,
+    };
   }
 }
