@@ -159,6 +159,38 @@ class SeriesController extends StateNotifier<AsyncValue<void>> {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>?> updateSeries({
+    required int id,
+    required String name,
+    required bool isActive,
+  }) async {
+    state = const AsyncLoading();
+    try {
+      final res = await _adminService.updateSeries(
+        id: id,
+        name: name,
+        isActive: isActive,
+      );
+      state = const AsyncData(null);
+      return res;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return null;
+    }
+  }
+
+  Future<String?> deleteSeries(int id) async {
+    state = const AsyncLoading();
+    try {
+      await _adminService.deleteSeries(id);
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return e.toString().replaceAll('Exception: ', '');
+    }
+  }
 }
 
 final seriesControllerProvider = StateNotifierProvider<SeriesController, AsyncValue<void>>((ref) {

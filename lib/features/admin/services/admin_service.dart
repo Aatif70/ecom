@@ -293,6 +293,56 @@ class AdminService {
     }
   }
 
+  Future<Map<String, dynamic>> updateSeries({
+    required int id,
+    required String name,
+    required bool isActive,
+  }) async {
+    final headers = await _getHeaders();
+    headers['Content-Type'] = 'application/json';
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.seriesEndpoint}/$id');
+    
+    final body = {
+      'Name': name,
+      'IsActive': isActive,
+    };
+    FancyLogger.apiRequest('PUT', uri.toString(), body);
+
+    final response = await http.put(
+      uri,
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    FancyLogger.apiResponse('PUT', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to update series: ${response.body}');
+    }
+  }
+
+  Future<void> deleteSeries(int id) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.seriesEndpoint}/$id');
+
+    FancyLogger.apiRequest('DELETE', uri.toString());
+    final response = await http.delete(uri, headers: headers);
+    FancyLogger.apiResponse('DELETE', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      String errorMessage = 'Failed to delete series';
+      try {
+        final body = jsonDecode(response.body);
+        if (body is Map<String, dynamic> && body['Message'] != null) {
+          errorMessage = body['Message'];
+        }
+      } catch (_) {}
+      throw Exception(errorMessage);
+    }
+  }
+
   // --- Designs ---
 
   Future<List<Design>> getDesigns(int page, int pageSize) async {

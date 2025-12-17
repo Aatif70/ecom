@@ -47,13 +47,15 @@ class Category {
 class Series {
   final int id;
   final String name;
+  final bool isActive;
 
-  Series({required this.id, required this.name});
+  Series({required this.id, required this.name, this.isActive = true});
 
   factory Series.fromJson(Map<String, dynamic> json) {
     return Series(
       id: json['SeriesId'] ?? json['Id'] ?? 0,
       name: json['Name'] ?? '',
+      isActive: json['IsActive'] ?? true,
     );
   }
 }

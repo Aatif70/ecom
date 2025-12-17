@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../provider/admin_provider.dart';
 import '../models/admin_models.dart';
 import 'add_series_screen.dart';
+import 'edit_series_screen.dart';
 
 class SeriesListScreen extends ConsumerWidget {
   const SeriesListScreen({super.key});
@@ -67,22 +68,33 @@ class _SeriesItem extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: Colors.blueAccent.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+               builder: (context) => EditSeriesScreen(series: series),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          leading: Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(Icons.layers, color: Colors.blueAccent),
           ),
-          child: const Icon(Icons.layers, color: Colors.blueAccent),
+          title: Text(
+            series.name,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
         ),
-        title: Text(
-          series.name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
       ),
     ).animate().fade(duration: 400.ms).slideX(delay: (50 * index).ms);
   }
