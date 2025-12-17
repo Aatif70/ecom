@@ -14,12 +14,16 @@ class EditProductSizePriceScreen extends ConsumerStatefulWidget {
 class _EditProductSizePriceScreenState extends ConsumerState<EditProductSizePriceScreen> {
   late TextEditingController _priceController;
   late bool _isActive;
+  late int _selectedDesignId;
+  late int _selectedSizeId;
 
   @override
   void initState() {
     super.initState();
     _priceController = TextEditingController(text: widget.productSizePrice.price.toString());
     _isActive = widget.productSizePrice.isActive;
+    _selectedDesignId = widget.productSizePrice.designId;
+    _selectedSizeId = widget.productSizePrice.sizeId;
   }
 
   @override
@@ -46,6 +50,8 @@ class _EditProductSizePriceScreenState extends ConsumerState<EditProductSizePric
 
     final res = await ref.read(productSizePriceControllerProvider.notifier).updateProductSizePrice(
       widget.productSizePrice.pspId,
+      _selectedDesignId,
+      _selectedSizeId,
       price,
       _isActive,
     );
@@ -153,17 +159,71 @@ class _EditProductSizePriceScreenState extends ConsumerState<EditProductSizePric
             
             const SizedBox(height: 32),
 
-            // Read-only info fields
-            _buildInfoCard(
-              'Design', 
-              widget.productSizePrice.designName, 
-              Icons.design_services
+            // Design Dropdown
+            ref.watch(allDesignsProvider).when(
+              data: (designs) => DropdownButtonFormField<int>(
+                isExpanded: true,
+                value: designs.any((d) => d.id == _selectedDesignId) ? _selectedDesignId : null,
+                decoration: InputDecoration(
+                  labelText: 'Design',
+                  prefixIcon: const Icon(Icons.design_services),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                items: designs.map((d) {
+                   // Find first image if available
+                   String? imageUrl;
+                   if (d.images.isNotEmpty) imageUrl = d.images.first;
+
+                   return DropdownMenuItem(
+                    value: d.id,
+                    child: Row(
+                      children: [
+                        if (imageUrl != null)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Image.network(imageUrl, width: 24, height: 24, fit: BoxFit.cover, errorBuilder: (_,__,___) => const SizedBox(width: 24)),
+                          )
+                        else const SizedBox(width: 24),
+                        const SizedBox(width: 12),
+                        Expanded(child: Text(d.title, overflow: TextOverflow.ellipsis)),
+                      ],
+                    ),
+                  );
+                }).toList(),
+                onChanged: (val) {
+                  if (val != null) setState(() => _selectedDesignId = val);
+                },
+              ),
+              loading: () => const LinearProgressIndicator(),
+              error: (e,s) => Text('Error loading designs: $e'),
             ),
+
             const SizedBox(height: 16),
-            _buildInfoCard(
-              'Size', 
-              widget.productSizePrice.sizeName, 
-              Icons.format_size
+
+            // Size Dropdown
+            ref.watch(allSizesProvider).when(
+              data: (sizes) => DropdownButtonFormField<int>(
+                isExpanded: true,
+                value: sizes.any((s) => s.id == _selectedSizeId) ? _selectedSizeId : null,
+                decoration: InputDecoration(
+                  labelText: 'Size',
+                  prefixIcon: const Icon(Icons.format_size),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                items: sizes.map((s) => DropdownMenuItem(
+                  value: s.id,
+                  child: Text(s.sizeLabel),
+                )).toList(),
+                onChanged: (val) {
+                  if (val != null) setState(() => _selectedSizeId = val);
+                },
+              ),
+              loading: () => const LinearProgressIndicator(),
+              error: (e,s) => Text('Error loading sizes: $e'),
             ),
 
             const SizedBox(height: 24),
@@ -265,41 +325,5 @@ class _EditProductSizePriceScreenState extends ConsumerState<EditProductSizePric
     );
   }
 
-  Widget _buildInfoCard(String label, String value, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.grey[600]),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+
 }

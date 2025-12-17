@@ -364,6 +364,18 @@ final sizesProvider = FutureProvider.autoDispose.family<List<Size>, int>((ref, p
   return adminService.getSizes(page, 20);
 });
 
+final allSizesProvider = FutureProvider.autoDispose<List<Size>>((ref) async {
+  final adminService = ref.watch(adminServiceProvider);
+  // Fetching a large number to simulate "all" for dropdown
+  return adminService.getSizes(1, 100); 
+});
+
+final allDesignsProvider = FutureProvider.autoDispose<List<Design>>((ref) async {
+  final adminService = ref.watch(adminServiceProvider);
+  // Fetching a large number to simulate "all" for dropdown
+  return adminService.getDesigns(1, 100); 
+});
+
 // --- Product Size Price ---
 
 class ProductSizePriceController extends StateNotifier<AsyncValue<void>> {
@@ -383,10 +395,10 @@ class ProductSizePriceController extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  Future<Map<String, dynamic>?> updateProductSizePrice(int id, double price, bool isActive) async {
+  Future<Map<String, dynamic>?> updateProductSizePrice(int id, int designId, int sizeId, double price, bool isActive) async {
     state = const AsyncLoading();
     try {
-      final res = await _adminService.updateProductSizePrice(id, price, isActive);
+      final res = await _adminService.updateProductSizePrice(id, designId, sizeId, price, isActive);
       state = const AsyncData(null);
       return res;
     } catch (e, st) {
@@ -419,10 +431,7 @@ final productSizePricesProvider = FutureProvider.autoDispose.family<List<Product
 });
 
 // Providers for Dropdowns (fetch larger list)
-final allDesignsProvider = FutureProvider.autoDispose<List<Design>>((ref) async {
-  final adminService = ref.watch(adminServiceProvider);
-  return adminService.getDesigns(1, 100);
-});
+// Note: allDesignsProvider and allSizesProvider are defined above.
 
 final allBrandsProvider = FutureProvider.autoDispose<List<Brand>>((ref) async {
   final adminService = ref.watch(adminServiceProvider);
@@ -437,11 +446,6 @@ final allCategoriesProvider = FutureProvider.autoDispose<List<Category>>((ref) a
 final allSeriesProvider = FutureProvider.autoDispose<List<Series>>((ref) async {
   final adminService = ref.watch(adminServiceProvider);
   return adminService.getSeries(1, 100);
-});
-
-final allSizesProvider = FutureProvider.autoDispose<List<Size>>((ref) async {
-  final adminService = ref.watch(adminServiceProvider);
-  return adminService.getSizes(1, 100);
 });
 
 // --- Users ---

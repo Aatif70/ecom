@@ -651,12 +651,14 @@ class AdminService {
     }
   }
 
-  Future<Map<String, dynamic>> updateProductSizePrice(int id, double price, bool isActive) async {
+  Future<Map<String, dynamic>> updateProductSizePrice(int id, int designId, int sizeId, double price, bool isActive) async {
     final headers = await _getHeaders();
     headers['Content-Type'] = 'application/json';
     final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.productSizePriceEndpoint}/$id');
     
     final body = {
+      'DesignId': designId,
+      'SizeId': sizeId,
       'Price': price,
       'IsActive': isActive,
     };
