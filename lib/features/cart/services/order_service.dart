@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/services/api_client.dart';
-import '../../../core/services/api_client.dart';
 import '../../../core/services/storage_service.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../models/order_model.dart';
