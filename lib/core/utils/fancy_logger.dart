@@ -74,7 +74,7 @@ class FancyLogger {
     }
   }
 
-  static void error(String message) {
-    _logger.e(message);
+  static void error(String message, [dynamic error, StackTrace? stackTrace]) {
+    _logger.e(message, error: error, stackTrace: stackTrace);
   }
 }

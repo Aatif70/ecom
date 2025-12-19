@@ -782,4 +782,34 @@ class AdminService {
       throw Exception(errorMessage);
     }
   }
+
+  // --- Orders ---
+
+  Future<List<AdminOrder>> getAdminOrders({
+    int page = 1,
+    int pageSize = 10,
+    String status = 'pending',
+  }) async {
+    final headers = await _getHeaders();
+    final uri = Uri.parse(
+            '${ApiConstants.baseUrl}${ApiConstants.orderEndpoint}/admin/all')
+        .replace(queryParameters: {
+      'page': page.toString(),
+      'pageSize': pageSize.toString(),
+      'status': status,
+    });
+
+    FancyLogger.apiRequest('GET', uri.toString());
+    final response = await http.get(uri, headers: headers);
+    FancyLogger.apiResponse(
+        'GET', uri.toString(), response.statusCode, response.body);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final List<dynamic> data = responseData['Data'] ?? [];
+      return data.map((json) => AdminOrder.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load admin orders: ${response.statusCode}');
+    }
+  }
 }

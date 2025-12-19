@@ -253,3 +253,114 @@ class User {
     };
   }
 }
+
+class SizeDetail {
+  final int id;
+  final int sizeId;
+  final String sizeName;
+  final int orderedQty;
+  final int pendingQty;
+
+  SizeDetail({
+    required this.id,
+    required this.sizeId,
+    required this.sizeName,
+    required this.orderedQty,
+    required this.pendingQty,
+  });
+
+  factory SizeDetail.fromJson(Map<String, dynamic> json) {
+    return SizeDetail(
+      id: json['Id'] ?? 0,
+      sizeId: json['SizeId'] ?? 0,
+      sizeName: json['SizeName'] ?? '',
+      orderedQty: json['OrderedQty'] ?? 0,
+      pendingQty: json['PendingQty'] ?? 0,
+    );
+  }
+}
+
+class AdminOrderItem {
+  final int orderItemId;
+  final int designId;
+  final String designName;
+  final String designImageUrl;
+  final int totalQuantity;
+  final List<SizeDetail> sizeDetails;
+
+  AdminOrderItem({
+    required this.orderItemId,
+    required this.designId,
+    required this.designName,
+    required this.designImageUrl,
+    required this.totalQuantity,
+    this.sizeDetails = const [],
+  });
+
+  factory AdminOrderItem.fromJson(Map<String, dynamic> json) {
+    String img = json['DesignImageUrl'] ?? '';
+    if (img.isNotEmpty && !img.startsWith('http')) {
+      img = '${ApiConstants.baseUrl}$img';
+    }
+
+    var sizesList = <SizeDetail>[];
+    if (json['SizeDetails'] != null) {
+      sizesList = List<SizeDetail>.from(
+          json['SizeDetails'].map((x) => SizeDetail.fromJson(x)));
+    }
+
+    return AdminOrderItem(
+      orderItemId: json['OrderItemId'] ?? 0,
+      designId: json['DesignId'] ?? 0,
+      designName: json['DesignName'] ?? '',
+      designImageUrl: img,
+      totalQuantity: json['TotalQuantity'] ?? 0,
+      sizeDetails: sizesList,
+    );
+  }
+}
+
+class AdminOrder {
+  final int orderId;
+  final String orderNumber;
+  final int userId;
+  final String userName;
+  final String userMobile;
+  final DateTime orderDate;
+  final int totalQty;
+  final String status;
+  final List<AdminOrderItem> orderItems;
+
+  AdminOrder({
+    required this.orderId,
+    required this.orderNumber,
+    required this.userId,
+    required this.userName,
+    required this.userMobile,
+    required this.orderDate,
+    required this.totalQty,
+    required this.status,
+    this.orderItems = const [],
+  });
+
+  factory AdminOrder.fromJson(Map<String, dynamic> json) {
+    var itemsList = <AdminOrderItem>[];
+    if (json['OrderItems'] != null) {
+      itemsList = List<AdminOrderItem>.from(
+          json['OrderItems'].map((x) => AdminOrderItem.fromJson(x)));
+    }
+
+    return AdminOrder(
+      orderId: json['OrderId'] ?? 0,
+      orderNumber: json['OrderNumber'] ?? '',
+      userId: json['UserId'] ?? 0,
+      userName: json['UserName'] ?? '',
+      userMobile: json['UserMobile'] ?? '',
+      orderDate: DateTime.parse(
+          json['OrderDate'] ?? DateTime.now().toIso8601String()),
+      totalQty: json['TotalQty'] ?? 0,
+      status: json['Status'] ?? 'Pending',
+      orderItems: itemsList,
+    );
+  }
+}
