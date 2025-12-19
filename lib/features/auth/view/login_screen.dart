@@ -188,7 +188,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 60,
                     child: ElevatedButton(
                       onPressed: authState.isLoading
                           ? null
@@ -211,11 +211,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         : const Text(
                           "Log In",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-
                           ),
+
                         ),
 
                     ),
@@ -223,28 +223,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   
                   const SizedBox(height: 16),
                   
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                       TextButton(
-                        onPressed: () {},
-                        child: const Text("Forgot Password?", style: TextStyle(color: Colors.grey)),
-                      ),
-                      const Text("  "),
-                       TextButton(
-                        onPressed: () {},
-                        child: const Text("Sign Up", style: TextStyle(color: Colors.black)),
-                      ),
-                    ],
-                  ),
+
                   
-                  const SizedBox(height: 100),
-                  
-                  const Text(
-                    "Retailer accounts only.",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  const SizedBox(height: 20),
+
                 ],
               ),
             ),
