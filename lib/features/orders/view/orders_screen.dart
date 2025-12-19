@@ -223,7 +223,7 @@ class _OrderCard extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      DateFormat('MMM dd, yyyy • hh:mm a').format(DateTime.parse(order.orderDate)),
+                      DateFormat('MMM dd, yyyy').format(DateTime.parse(order.orderDate)),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Colors.grey[500],
                             fontWeight: FontWeight.w500,
@@ -334,8 +334,8 @@ class _OrderCard extends ConsumerWidget {
                     const _VerticalDivider(),
                     const SizedBox(width: 24),
                     _StatItem(
-                      label: 'Items',
-                      value: order.orderItems.length.toString(),
+                      label: 'Total Amount',
+                      value: '₹${order.totalAmount.toStringAsFixed(2)}',
                     ),
                   ],
                 ),

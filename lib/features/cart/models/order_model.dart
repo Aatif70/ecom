@@ -35,6 +35,7 @@ class Order {
   final String userMobile;
   final String orderDate;
   final int totalQty;
+  final double totalAmount;
   final String status;
   final List<OrderItem> orderItems;
 
@@ -46,6 +47,7 @@ class Order {
     required this.userMobile,
     required this.orderDate,
     required this.totalQty,
+    required this.totalAmount,
     required this.status,
     required this.orderItems,
   });
@@ -59,6 +61,7 @@ class Order {
       userMobile: json['UserMobile'],
       orderDate: json['OrderDate'],
       totalQty: json['TotalQty'],
+      totalAmount: (json['TotalAmount'] as num).toDouble(),
       status: json['Status'],
       orderItems: (json['OrderItems'] as List)
           .map((item) => OrderItem.fromJson(item))
@@ -74,6 +77,7 @@ class Order {
     String? userMobile,
     String? orderDate,
     int? totalQty,
+    double? totalAmount,
     String? status,
     List<OrderItem>? orderItems,
   }) {
@@ -85,6 +89,7 @@ class Order {
       userMobile: userMobile ?? this.userMobile,
       orderDate: orderDate ?? this.orderDate,
       totalQty: totalQty ?? this.totalQty,
+      totalAmount: totalAmount ?? this.totalAmount,
       status: status ?? this.status,
       orderItems: orderItems ?? this.orderItems,
     );

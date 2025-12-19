@@ -328,6 +328,7 @@ class AdminOrder {
   final String userMobile;
   final DateTime orderDate;
   final int totalQty;
+  final double totalAmount;
   final String status;
   final List<AdminOrderItem> orderItems;
 
@@ -339,6 +340,7 @@ class AdminOrder {
     required this.userMobile,
     required this.orderDate,
     required this.totalQty,
+    required this.totalAmount,
     required this.status,
     this.orderItems = const [],
   });
@@ -359,6 +361,7 @@ class AdminOrder {
       orderDate: DateTime.parse(
           json['OrderDate'] ?? DateTime.now().toIso8601String()),
       totalQty: json['TotalQty'] ?? 0,
+      totalAmount: (json['TotalAmount'] ?? 0).toDouble(),
       status: json['Status'] ?? 'Pending',
       orderItems: itemsList,
     );

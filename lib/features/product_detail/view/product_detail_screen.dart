@@ -103,11 +103,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "SKU: ${product.sku}",
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary),
-                            ),
+                            // const SizedBox(height: 8),
+                            // Text(
+                            //   "SKU: ${product.sku}",
+                            //   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary),
+                            // ),
                             const SizedBox(height: 16),
                             Text(
                               product.description,
@@ -177,22 +177,22 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                        ),
                                      ],
                                    ),
-                                   Column(
-                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                     children: [
-                                       Text(
-                                         "Stock",
-                                         style: Theme.of(context).textTheme.bodySmall,
-                                       ),
-                                        Text(
-                                         "${variant.availableQty} units",
-                                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                           color: variant.availableQty < 10 ? Colors.orange : Colors.green,
-                                           fontWeight: FontWeight.w600,
-                                         ),
-                                       ),
-                                     ],
-                                   ),
+                                   // Column(
+                                   //   crossAxisAlignment: CrossAxisAlignment.end,
+                                   //   children: [
+                                   //     Text(
+                                   //       "Stock",
+                                   //       style: Theme.of(context).textTheme.bodySmall,
+                                   //     ),
+                                   //      Text(
+                                   //       "${variant.availableQty} units",
+                                   //       style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                   //         color: variant.availableQty < 10 ? Colors.orange : Colors.green,
+                                   //         fontWeight: FontWeight.w600,
+                                   //       ),
+                                   //     ),
+                                   //   ],
+                                   // ),
                                  ],
                                ),
                              ),

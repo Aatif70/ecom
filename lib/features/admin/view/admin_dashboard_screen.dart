@@ -340,6 +340,8 @@ class _OrderListState extends ConsumerState<_OrderList> {
                               children: [
                                 Chip(label: Text('Qty: ${order.totalQty}')),
                                 const SizedBox(width: 8),
+                                Chip(label: Text('₹${order.totalAmount.toStringAsFixed(2)}')),
+                                const SizedBox(width: 8),
                                 Chip(
                                   label: Text(order.status),
                                   backgroundColor: _getStatusColor(order.status),
