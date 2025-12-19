@@ -15,11 +15,18 @@ class OrdersScreen extends ConsumerWidget {
     final ordersAsync = ref.watch(ordersListProvider);
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text('My Orders'),
+        title: const Text(
+          'My Orders',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
+            icon: const Icon(Icons.shopping_bag_outlined, color: Colors.black87),
             onPressed: () => context.push('/cart'),
           ),
         ],
@@ -32,9 +39,9 @@ class OrdersScreen extends ConsumerWidget {
           data: (orders) => orders.isEmpty
               ? _buildEmptyState(context)
               : ListView.separated(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
                   itemCount: orders.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  separatorBuilder: (_, __) => const SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     final order = orders[index];
                     return _OrderCard(order: order);
@@ -45,11 +52,21 @@ class OrdersScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Error: $err'),
+                Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
                 const SizedBox(height: 16),
-                ElevatedButton(
+                Text(
+                  'Something went wrong',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  err.toString(),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                FilledButton.tonal(
                   onPressed: () => ref.refresh(ordersListProvider),
-                  child: const Text('Retry'),
+                  child: const Text('Try Again'),
                 ),
               ],
             ),
@@ -60,38 +77,55 @@ class OrdersScreen extends ConsumerWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
-    return ListView(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height - 200,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey[300]),
-                const SizedBox(height: 16),
-                Text('No orders yet', style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 8),
-                Text(
-                  'Your orders will appear here',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    if (context.canPop()) {
-                      context.pop();
-                    } else {
-                      context.go('/');
-                    }
-                  },
-                  child: const Text('Start Shopping'),
+                child: Icon(Icons.local_mall_outlined, size: 64, color: Colors.grey[400]),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'No orders yet',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Browse our catalog and discover amazing items.',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              FilledButton(
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.go('/');
+                  }
+                },
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
-              ],
-            ),
+                child: const Text('Start Shopping'),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
@@ -106,15 +140,19 @@ class _OrderCard extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Cancel Order'),
-        content: const Text('Are you sure you want to cancel this order?'),
+        content: const Text('Are you sure you want to cancel this order? This action cannot be undone.'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('No'),
+            child: const Text('No, Keep Order'),
           ),
-          TextButton(
+          FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.red[50],
+              foregroundColor: Colors.red,
+            ),
             child: const Text('Yes, Cancel'),
           ),
         ],
@@ -128,7 +166,8 @@ class _OrderCard extends ConsumerWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Order cancelled successfully'),
-              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.black87,
             ),
           );
         }
@@ -148,164 +187,175 @@ class _OrderCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final statusColor = _getStatusColor(order.status);
+    final isPending = order.status.toLowerCase() == 'pending';
 
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(color: Colors.grey.shade100),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header with order number and status
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        order.orderNumber,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        DateFormat('MMM dd, yyyy').format(DateTime.parse(order.orderDate)),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: statusColor.withValues(alpha: 0.5)),
-                  ),
-                  child: Text(
-                    order.status.toUpperCase(),
-                    style: TextStyle(
-                      color: statusColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      order.orderNumber,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -0.5,
+                          ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-            if (order.status.toLowerCase() == 'pending')
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () => _showCancelDialog(context, ref),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.red,
-                      side: const BorderSide(color: Colors.red),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                    const SizedBox(height: 4),
+                    Text(
+                      DateFormat('MMM dd, yyyy • hh:mm a').format(DateTime.parse(order.orderDate)),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
-                    child: const Text('Cancel Order'),
-                  ),
+                  ],
                 ),
               ),
-            const Divider(height: 24),
-            
-            // Order items preview
-            ...order.orderItems.take(2).map((item) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                      imageUrl: '${ApiConstants.baseUrl}${item.designImageUrl}',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey[200],
-                        width: 50,
-                        height: 50,
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey[200],
-                        width: 50,
-                        height: 50,
-                        child: const Icon(Icons.image, color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.designName,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Qty: ${item.totalQuantity}',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )),
-            
-            if (order.orderItems.length > 2)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: statusColor.withValues(alpha: 0.2)),
+                ),
                 child: Text(
-                  '+${order.orderItems.length - 2} more items',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  order.status.toUpperCase(),
+                  style: TextStyle(
+                    color: statusColor,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
-            
-            const Divider(height: 24),
-            
-            // Order stats
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _StatItem(
-                  label: 'Total Qty',
-                  value: order.totalQty.toString(),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Items
+          ...order.orderItems.take(2).map((item) => Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade100),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(11),
+                        child: CachedNetworkImage(
+                          imageUrl: '${ApiConstants.baseUrl}${item.designImageUrl}',
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => Container(color: Colors.grey[50]),
+                          errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported, size: 20),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.designName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Quantity: ${item.totalQuantity}',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                _StatItem(
-                  label: 'Items',
-                  value: order.orderItems.length.toString(),
+              )),
+
+          if (order.orderItems.length > 2)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Text(
+                '+ ${order.orderItems.length - 2} more items',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
                 ),
-                _StatItem(
-                  label: 'User',
-                  value: order.userName,
-                ),
-              ],
+              ),
             ),
-          ],
-        ),
+
+          const Divider(height: 1),
+          const SizedBox(height: 16),
+
+          // Stats & Action
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    _StatItem(
+                      label: 'Total Qty',
+                      value: order.totalQty.toString(),
+                    ),
+                    const SizedBox(width: 24),
+                    const _VerticalDivider(),
+                    const SizedBox(width: 24),
+                    _StatItem(
+                      label: 'Items',
+                      value: order.orderItems.length.toString(),
+                    ),
+                  ],
+                ),
+              ),
+              if (isPending)
+                OutlinedButton(
+                  onPressed: () => _showCancelDialog(context, ref),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.red[400],
+                    side: BorderSide(color: Colors.red.shade100),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text('Cancel Order'),
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -313,13 +363,13 @@ class _OrderCard extends ConsumerWidget {
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'delivered':
-        return Colors.green;
+        return const Color(0xFF22C55E); // Green 500
       case 'pending':
-        return Colors.orange;
+        return const Color(0xFFF59E0B); // Amber 500
       case 'processing':
-        return Colors.blue;
+        return const Color(0xFF3B82F6); // Blue 500
       case 'cancelled':
-        return Colors.red;
+        return const Color(0xFFEF4444); // Red 500
       default:
         return Colors.grey;
     }
@@ -342,20 +392,36 @@ class _StatItem extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-              ),
+          style: TextStyle(
+            color: Colors.grey[500],
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.5,
+          ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(
           value,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            color: Colors.black87,
+          ),
         ),
       ],
+    );
+  }
+}
+
+class _VerticalDivider extends StatelessWidget {
+  const _VerticalDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 1,
+      height: 24,
+      color: Colors.grey[200],
     );
   }
 }
