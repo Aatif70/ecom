@@ -10,17 +10,15 @@ import '../models/orders_list_model.dart';
 
 final orderServiceProvider = Provider<OrderService>((ref) {
   final apiClient = ApiClient();
-  final authService = ref.read(authServiceProvider);
   final storageService = ref.read(storageServiceProvider);
-  return OrderService(apiClient, authService, storageService);
+  return OrderService(apiClient, storageService);
 });
 
 class OrderService {
   final ApiClient _apiClient;
-  final AuthService _authService;
   final StorageService _storageService;
 
-  OrderService(this._apiClient, this._authService, this._storageService);
+  OrderService(this._apiClient, this._storageService);
 
   Future<Order> placeOrder() async {
     final token = await _storageService.getToken();
@@ -64,6 +62,25 @@ class OrderService {
       return ordersResponse.data;
     } else {
       throw Exception('Failed to fetch orders: ${response.statusCode}');
+    }
+  }
+
+  Future<void> cancelOrder(int orderId) async {
+    final token = await _storageService.getToken();
+    final uri = Uri.parse(
+      '${ApiConstants.baseUrl}${ApiConstants.myOrdersEndpoint}/$orderId/cancel',
+    );
+
+    final response = await _apiClient.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to cancel order: ${response.statusCode}');
     }
   }
 }

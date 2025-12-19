@@ -96,13 +96,57 @@ class OrdersScreen extends ConsumerWidget {
   }
 }
 
-class _OrderCard extends StatelessWidget {
+class _OrderCard extends ConsumerWidget {
   final Order order;
 
   const _OrderCard({required this.order});
 
+  Future<void> _showCancelDialog(BuildContext context, WidgetRef ref) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Cancel Order'),
+        content: const Text('Are you sure you want to cancel this order?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Yes, Cancel'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      try {
+        await ref.read(ordersNotifierProvider.notifier).cancelOrder(order.orderId);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Order cancelled successfully'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to cancel order: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final statusColor = _getStatusColor(order.status);
 
     return Card(
@@ -158,6 +202,24 @@ class _OrderCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (order.status.toLowerCase() == 'pending')
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () => _showCancelDialog(context, ref),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text('Cancel Order'),
+                  ),
+                ),
+              ),
             const Divider(height: 24),
             
             // Order items preview
@@ -267,12 +329,10 @@ class _OrderCard extends StatelessWidget {
 class _StatItem extends StatelessWidget {
   final String label;
   final String value;
-  final bool isHighlight;
 
   const _StatItem({
     required this.label,
     required this.value,
-    this.isHighlight = false,
   });
 
   @override
@@ -291,7 +351,6 @@ class _StatItem extends StatelessWidget {
           value,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: isHighlight ? Colors.orange : null,
               ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,

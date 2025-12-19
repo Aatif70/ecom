@@ -54,4 +54,17 @@ class OrdersNotifier extends StateNotifier<AsyncValue<List<Order>>> {
       }
     });
   }
+
+  Future<void> cancelOrder(int orderId) async {
+    await _orderService.cancelOrder(orderId);
+    state.whenData((orders) {
+      final updatedOrders = orders.map((order) {
+        if (order.orderId == orderId) {
+          return order.copyWith(status: 'Cancelled');
+        }
+        return order;
+      }).toList();
+      state = AsyncValue.data(updatedOrders);
+    });
+  }
 }

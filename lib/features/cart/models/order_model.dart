@@ -65,6 +65,30 @@ class Order {
           .toList(),
     );
   }
+
+  Order copyWith({
+    int? orderId,
+    String? orderNumber,
+    int? userId,
+    String? userName,
+    String? userMobile,
+    String? orderDate,
+    int? totalQty,
+    String? status,
+    List<OrderItem>? orderItems,
+  }) {
+    return Order(
+      orderId: orderId ?? this.orderId,
+      orderNumber: orderNumber ?? this.orderNumber,
+      userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
+      userMobile: userMobile ?? this.userMobile,
+      orderDate: orderDate ?? this.orderDate,
+      totalQty: totalQty ?? this.totalQty,
+      status: status ?? this.status,
+      orderItems: orderItems ?? this.orderItems,
+    );
+  }
 }
 
 class OrderItem {
